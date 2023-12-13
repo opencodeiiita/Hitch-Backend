@@ -33,35 +33,6 @@ Hitch is a  Collaborative Workspace Platform, leveraging the power of Next.js an
 7. **Centralized Filtered File Sharing:**
    - Streamlined document management with advanced filters, version control, and automated categorization for efficient file sharing.
 
-
-
-## Folder Structure
-'''
-|   .env.example
-|   .gitignore
-|   app.js
-|   package-lock.json
-|   package.json
-|   README.md
-|           
-\---src
-    +---config
-    |       
-    +---controllers
-    |       
-    +---enums
-    |       
-    +---middlewares
-    |       
-    +---models
-    |       
-    +---public
-    |       
-    +---routes
-    |       
-    \---utils
-'''
-
 ## Dependencies
 You need npm/yarn installed in your local machine in order to run this app.
 
