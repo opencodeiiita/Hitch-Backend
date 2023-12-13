@@ -23,6 +23,14 @@ const MessageSchema = new mongoose.Schema({
             type: String,
         },
     ],
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+    },
+    subChannels: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "chatrooms",
+    },
 });
 
 module.exports = mongoose.model("messages", MessageSchema);

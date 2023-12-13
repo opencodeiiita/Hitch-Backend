@@ -1,12 +1,17 @@
 const mongoose = require("mongoose");
 
-const USER_ROLE = require("../enums/userRoles.enums");
-
 const ChannelSchema = new mongoose.Schema({
     __created: {
         type: Date,
         default: Date.now,
     },
+    // the workspace to which the channel belongs
+    workspace: {
+        type: mongoose.Schema.ObjectId,
+        ref: "workspaces",
+        required: [true, "Channel must belong to a workspace"],
+    },
+    // name of the channel should be unique in the workspace
     name: {
         type: String,
         required: [true, "Name is required for channel"],
@@ -21,26 +26,24 @@ const ChannelSchema = new mongoose.Schema({
     description: {
         type: String,
     },
+    trpe: {
+        type: String,
+        enum: ["public", "private"],
+        default: "public",
+    },
     createdBy: {
         type: mongoose.Schema.ObjectId,
         ref: "users",
         required: [true, "Channel must belong to a user"],
     },
-    // store the members of the channel withh there role
+    // store the members of the channel.
     members: [
         {
-            user: {
-                type: mongoose.Schema.ObjectId,
-                ref: "users",
-            },
-            role: {
-                type: String,
-                enum: USER_ROLE,
-                default: USER_ROLE.NORMAL_USER,
-            },
+            type: mongoose.Schema.ObjectId,
+            ref: "users",
         },
     ],
-    chatRooms: [
+    subChannels: [
         {
             type: mongoose.Schema.ObjectId,
             ref: "chatrooms",

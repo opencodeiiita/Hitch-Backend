@@ -1,4 +1,4 @@
-export function response_200(res, message, data, actions) {
+function response_200(res, message, data, actions) {
     return res.status(200).json({
         status: 'OK',
         message,
@@ -7,7 +7,7 @@ export function response_200(res, message, data, actions) {
     });
 }
 
-export function response_201(res, message, data) {
+function response_201(res, message, data) {
     return res.status(201).json({
         status: 'Inserted',
         message,
@@ -15,14 +15,14 @@ export function response_201(res, message, data) {
     });
 }
 
-export function response_204(res, message) {
+function response_204(res, message) {
     return res.status(204).json({
         status: 'No content',
         message
     });
 }
 
-export function response_400(res, message) {
+function response_400(res, message) {
     return res.status(400).json({
         status: 'error',
         error: message,
@@ -30,7 +30,7 @@ export function response_400(res, message) {
     });
 }
 
-export function response_401(res, message) {
+function response_401(res, message) {
     return res.status(401).json({
         status: 'error',
         error: message,
@@ -38,7 +38,7 @@ export function response_401(res, message) {
     });
 }
 
-export function response_403(res, message) {
+function response_403(res, message) {
     return res.status(403).json({
         status: 'error',
         error: message,
@@ -46,7 +46,7 @@ export function response_403(res, message) {
     });
 }
 
-export function response_404(res, message) {
+function response_404(res, message) {
     return res.status(404).json({
         status: 'error',
         error: message,
@@ -54,7 +54,7 @@ export function response_404(res, message) {
     });
 }
 
-export function response_500(res, log_message, err) {
+function response_500(res, log_message, err) {
     var message = err != null ? `${log_message}: ${err}` : log_message;
 
     console.debug(message);
@@ -65,3 +65,15 @@ export function response_500(res, log_message, err) {
         message: "Internal server error"
     });
 }
+
+
+module.exports = {
+    response_200,
+    response_201,
+    response_204,
+    response_400,
+    response_401,
+    response_403,
+    response_404,
+    response_500
+};

@@ -10,6 +10,10 @@ const HuddleSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
     },
+    
+    description: {
+        type: String,
+    },
 
     chatRoom: {
         type: mongoose.Schema.Types.ObjectId,

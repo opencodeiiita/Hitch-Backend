@@ -1,7 +1,7 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import { response_200 } from './src/utils/responseCodes';
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const { response_200 } = require('./src/utils/responseCodes.utils');
 
 dotenv.config();
 const port = process.env.PORT || 5000;

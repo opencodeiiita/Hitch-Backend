@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const USER_ROLE = require("../enums/userRoles.enums");
 
 const UserSchema = new mongoose.Schema({
     __created: {
@@ -13,7 +14,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Name is required"],
         validate: {
             validator: function (v) {
-                return /^[a-zA-Z ]+$/.test(v); 
+                return /^[a-zA-Z ]+$/.test(v);
             },
             message: (name) => `${name.value} is not a valid name!`,
         },
@@ -48,6 +49,22 @@ const UserSchema = new mongoose.Schema({
             message: (username) => `${username.value} is not a valid username!`,
         },
     },
+
+    // store the channels of the user with there role in the channel
+
+    channels: [
+        {
+            chennel: {
+                type: mongoose.Schema.ObjectId,
+                ref: "channels",
+            },
+            role: {
+                type: String,
+                enum: USER_ROLE,
+                default: USER_ROLE.NORMAL_USER,
+            },
+        },
+    ],
 });
 
 // Reset password token generation
