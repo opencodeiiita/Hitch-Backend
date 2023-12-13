@@ -44,6 +44,34 @@ You need npm/yarn installed in your local machine in order to run this app.
   npm start
 ```
 
+## Folder Structure
+```js
+|   .env.example
+|   .gitignore
+|   app.js
+|   package-lock.json
+|   package.json
+|   README.md
+|
+\---src
+    +---config
+    |
+    +---controllers
+    |
+    +---enums
+    |
+    +---middlewares
+    |
+    +---models
+    |
+    +---public
+    |
+    +---routes
+    |
+    \---utils
+```
+
+
 ## How To Setup
 
 * Make sure your machine is having internet connection.
