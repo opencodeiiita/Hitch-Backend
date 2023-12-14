@@ -30,11 +30,10 @@ exports.updateWorkspace = async (req, res) => {
             return response_400(res, "Invalid Request: Missing required fields")
         }
 
-        const workspace = await Workspace.findById(req.params.id);
+        let workspace = await Workspace.findById(req.params.id);
         if (!workspace) {
             return response_400(res, "Invalid Request: Workspace not found")
         }
-
         if (workspace.createdBy !== userId) {
             return response_403(res, "Invalid Request: User not authorized to update workspace")
         }
