@@ -32,7 +32,7 @@ exports.updateWorkspace = async (req, res) => {
     try {
         const {name, description, workspaceId, userId} = req.body;
 
-        if (!name || !description || !workspaceId || !userId) {
+        if (!name || !description || !workspaceId || !userId || !req.params.id) {
             return response_400(res, "Invalid Request: Missing required fields")
         }
 
@@ -68,6 +68,10 @@ exports.updateWorkspace = async (req, res) => {
 
 exports.deleteWorkspace = async (req, res) => {
     try {
+        if (!req.body.userId || !req.params.id) {
+            return response_400(res, "Invalid Request: Missing required fields")
+        }
+
         const workspace = await Workspace.findById(req.params.id);
         if (!workspace) {
             return response_400(res, "Invalid Request: Workspace not found")
