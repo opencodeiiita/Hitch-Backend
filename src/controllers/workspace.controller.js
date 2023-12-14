@@ -1,5 +1,11 @@
 const Workspace = require('../models/workspace.models');
-const {response_201, response_500} = require('../utils/responseCodes.utils')
+const {
+    response_200,
+    response_201,
+    response_400,
+    response_403,
+    response_500
+} = require('../utils/responseCodes.utils')
 
 exports.createWorkspace = async (req, res) => {
     const workspace = new Workspace({
@@ -57,5 +63,23 @@ exports.updateWorkspace = async (req, res) => {
         })
     } catch (err) {
         return response_500(res, "Error updating workspace", err)
+    }
+}
+
+exports.deleteWorkspace = async (req, res) => {
+    try {
+        const workspace = await Workspace.findById(req.params.id);
+        if (!workspace) {
+            return response_400(res, "Invalid Request: Workspace not found")
+        }
+        if (workspace.createdBy !== req.body.userId) {
+            return response_403(res, "Invalid Request: User not authorized to delete workspace")
+        }
+
+        await Workspace.findByIdAndDelete(req.params.id);
+
+        return response_200(res, 'Workspace Deleted Successfully')
+    } catch (err) {
+        return response_500(res, "Error deleting workspace", err)
     }
 }
