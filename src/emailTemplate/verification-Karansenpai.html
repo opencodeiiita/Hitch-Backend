@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Verification</title>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background: #ffffff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 600px;
+        max-height: 500px;
+        height: 400px;
+        width: 100%;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px #1b1633;
+      }
+
+      h1 {
+        text-align: center;
+        color: #1b1633;
+        margin-bottom: 20px;
+      }
+
+      p {
+        color: #1b1633;
+        margin-bottom: 20px;
+        font-size: 16px;
+      }
+
+      .verify {
+        text-align: center;
+        display: inline-block;
+        width: 90%;
+        margin-top: 20px;
+        padding: 15px 30px;
+        background-color: #ffc728;
+        color: #1b1633;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+
+      .verify:hover {
+        background-color: #ffd6d6;
+      }
+
+      .footer {
+        margin-top: 20px;
+        color: #1b1633;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 20px;
+        }
+        .verify {
+          padding: 12px 24px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Verfiy Your Email Address</h1>
+      <p><b>Hello [User Name],</b></p>
+      <p>
+        Welcome to our platform! To complete your registration, please verify
+        your email address by clicking the link below:
+      </p>
+      <a href="[Link]" class="verify">Verify My Email</a>
+      <p class="footer">
+        If you didn't register on our platform, you can safely ignore this
+        email.
+      </p>
+    </div>
+  </body>
+</html>
