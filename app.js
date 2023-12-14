@@ -13,11 +13,11 @@ mongoose.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
     useUnifiedTopology: true,
 }).then(() => {
     console.log("Successfully connected to MongoDB.");
-  })
-  .catch(err => {
-    console.error("Failed to connect to MongoDB", err);
-    process.exit();
-});
+})
+    .catch(err => {
+        console.error("Failed to connect to MongoDB", err);
+        process.exit();
+    });
 
 const app = express();
 
@@ -27,6 +27,7 @@ app.use(cors());
 
 app.get('/', (req, res) => response_200(res, 'Server is running'));
 require('./src/routes/auth.routes')(app);
+require('./src/routes/workspace.routes')(app);
 
 app.listen(port, () =>
     console.log(`🚀 Server running on port http://localhost:${port}/`)

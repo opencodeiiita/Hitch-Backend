@@ -54,6 +54,14 @@ function response_404(res, message) {
     });
 }
 
+function response_409(res, message) {
+    return res.status(409).json({
+        status: 'error',
+        error: message,
+        message: "Conflict"
+    });
+}
+
 function response_500(res, log_message, err) {
     var message = err != null ? `${log_message}: ${err}` : log_message;
 
@@ -75,5 +83,6 @@ module.exports = {
     response_401,
     response_403,
     response_404,
+    response_409,
     response_500
 };
