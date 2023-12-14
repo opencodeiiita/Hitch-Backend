@@ -131,7 +131,7 @@ The following properties of every endpoint will be descibed in this file:
 
 ### Update Workspace
 
-- **URL:** /api/workspace/update/:id        -> MongooDB ID
+- **URL:** /api/workspace/update/:id        -> MongooDB ID for workspace
 - **Method:** PUT
 - **Authorized:** True
 - **Request Body:**
@@ -157,7 +157,7 @@ The following properties of every endpoint will be descibed in this file:
 
 ### Delete Workspace
 
-- **URL:** /api/workspace/delete/:id        -> MongooDB ID
+- **URL:** /api/workspace/delete/:id        -> MongooDB ID for workspace
 - **Method:** DELETE
 - **Authorized:** True
 - **Request Body:**
