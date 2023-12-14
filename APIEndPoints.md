@@ -102,3 +102,63 @@ The following properties of every endpoint will be descibed in this file:
         "data": null,
     }
     ```
+
+### Create Workspace
+
+- **URL:** /api/workspace/create
+- **Method:** POST
+- **Authorized:** True
+- **Request Body:**
+  - **name:** String
+  - **description:** String
+  - **workspaceId:** String     -> This is like username for workspace
+- **Success Status Code:** 201
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Workspace Created Successfully",
+        "data": {
+            "name": String,
+            "description": String,
+            "workspaceId": String,
+            "id": String,
+        },
+    }
+    ```
+
+### Get Workspaces
+
+- **URL:** /api/workspace/:workspaceId
+- **Method:** GET
+- **Authorized:** True
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Workspaces Fetched Successfully",
+        "data": [
+            {
+                "name": String,
+                "description": String,
+                "workspaceId": String,
+                "id": String,
+            },
+            {
+                "name": String,
+                "description": String,
+                "workspaceId": String,
+                "id": String,
+            },
+            {
+                "name": String,
+                "description": String,
+                "workspaceId": String,
+                "id": String,
+            },
+        ],
+    }
+    ```
