@@ -1,7 +1,7 @@
 const User = require('../models/user.models')
-const {response_201, response_400} = require('../utils/responseCodes.utils')
+const {response_201, response_500} = require('../utils/responseCodes.utils')
 
-exports.signup = (req, res) => {
+exports.signup = async (req, res) => {
     const user = new User({
         name: req.body.name,
         email: req.body.email,
@@ -9,11 +9,15 @@ exports.signup = (req, res) => {
         username: req.body.username,
     });
 
-    user.save()
-        .then(user => {
-            return response_201(res, 'User created successfully', user)
+    try {
+        const savedUser = await user.save();
+        return response_201(res, 'User created successfully', {
+            token: await user.generateToken(),
+            name: savedUser.name,
+            username: savedUser.username,
+            channels: savedUser.channels,
         })
-        .catch(err => {
-            return response_400(res, "Error creating user", err)
-        });
+    } catch (err) {
+        return response_500(res, "Error creating user", err)
+    }
 };
