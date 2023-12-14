@@ -129,37 +129,47 @@ The following properties of every endpoint will be descibed in this file:
     }
     ```
 
-### Get Workspaces
+### Update Workspace
 
-- **URL:** /api/workspace/:workspaceId
-- **Method:** GET
+- **URL:** /api/workspace/update/:id        -> MongooDB ID
+- **Method:** PUT
 - **Authorized:** True
+- **Request Body:**
+  - **userId:** userId              -> This is the id of the user who is signed in.
+  - **name:** String                   So needed to verify that the user is the creator of the workspace
+  - **description:** String
+  - **workspaceId:** String         -> This is like username for workspace
 - **Success Status Code:** 200
 - **Response Data:**
 
     ```json
     {
         "status": 'OK',
-        "message": "Workspaces Fetched Successfully",
-        "data": [
-            {
-                "name": String,
-                "description": String,
-                "workspaceId": String,
-                "id": String,
-            },
-            {
-                "name": String,
-                "description": String,
-                "workspaceId": String,
-                "id": String,
-            },
-            {
-                "name": String,
-                "description": String,
-                "workspaceId": String,
-                "id": String,
-            },
-        ],
+        "message": "Workspace Updated Successfully",
+        "data": {
+            "name": String,
+            "description": String,
+            "workspaceId": String,
+            "id": String,
+        },
+    }
+    ```
+
+### Delete Workspace
+
+- **URL:** /api/workspace/delete/:id        -> MongooDB ID
+- **Method:** DELETE
+- **Authorized:** True
+- **Request Body:**
+  - **userId:** userId              -> This is the id of the user who is signed in.
+                                       So needed to verify that the user is the creator of the workspace
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Workspace Deleted Successfully",
+        "data": null,
     }
     ```
