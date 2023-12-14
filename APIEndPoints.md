@@ -109,6 +109,7 @@ The following properties of every endpoint will be descibed in this file:
 - **Method:** POST
 - **Authorized:** True
 - **Request Body:**
+  - **userId:** userId            -> This is the id of the user who is creating the workspace
   - **name:** String
   - **description:** String
   - **workspaceId:** String     -> This is like username for workspace
