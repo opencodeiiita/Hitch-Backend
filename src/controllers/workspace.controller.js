@@ -27,21 +27,21 @@ exports.updateWorkspace = async (req, res) => {
         const {name, description, workspaceId, userId} = req.body;
 
         if (!name || !description || !workspaceId || !userId) {
-            return response_500(res, "Invalid Request: Missing required fields")
+            return response_400(res, "Invalid Request: Missing required fields")
         }
 
         const workspace = await Workspace.findById(req.params.id);
         if (!workspace) {
-            return response_500(res, "Invalid Request: Workspace not found")
+            return response_400(res, "Invalid Request: Workspace not found")
         }
 
         if (workspace.createdBy !== userId) {
-            return response_500(res, "Invalid Request: User not authorized to update workspace")
+            return response_403(res, "Invalid Request: User not authorized to update workspace")
         }
 
         const workspaceIDExists = await Workspace.findOne({workspaceId: workspaceId}).exec();
         if (workspaceIDExists) {
-            return response_500(res, "Invalid Request: workspaceId already in use")
+            return response_400(res, "Invalid Request: workspaceId already in use")
         }
 
         workspace = await Workspace.findByIdAndUpdate(req.params.id, {
