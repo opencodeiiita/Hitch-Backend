@@ -10,19 +10,7 @@ const {
 
 exports.updateChannel = async (req, res) => {
     try {
-        const {name, description, userId} = req.body;
-
-        if (!name || !description || !userId || !req.params.id) {
-            return response_400(res, "Invalid Request: Missing required fields")
-        }
-
-        let channel = await Channel.findById(req.params.id);
-        if (!channel) {
-            return response_400(res, "Invalid Request: Channel not found")
-        }
-        if (channel.createdBy !== userId) {
-            return response_403(res, "Invalid Request: User not authorized to update channel")
-        }
+        const {name, description} = req.body;
 
         channel = await Channel.findByIdAndUpdate(req.params.id, {
             name: name,
