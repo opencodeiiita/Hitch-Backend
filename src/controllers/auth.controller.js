@@ -46,28 +46,24 @@ exports.login = async(req, res) =>
         if (!email || !password) {
             return response_400(res, "Invalid Request: Missing required fields")
         }
-        // select password
-        const userExists = await User.findOne({email: email}).select('password').exec();
+        const userExists = await User.findOne({email: email}).exec();
         if (!userExists) {
             return response_400(res, "Invalid Request: User not found");
         }
-        // check if password is correct
         const passwordMatch = await userExists.comparePassword(password);
         if (!passwordMatch) {
             return response_401(res, "Invalid Request: Invalid Password");
         }
 
         return response_200(res, "User Logged In Successfully", {
-                username: user.username,
-                email: user.email,
-                name: user.name,
-                id: user._id,
-                token: await user.generateToken()
+            name: userExists.name,
+            username: userExists.username,
+            password: userExists.password,
+            token: await userExists.generateToken(),
             }
         )
     }
-    catch(err)
-    {
+    catch(err) {
         return response_500(res, "Error logging in", err)
     }
 }
