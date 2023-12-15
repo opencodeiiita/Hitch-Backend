@@ -46,6 +46,12 @@ const validatePassword = async(req,res, next)=>{
     {
         const user = await User.findOne({email: req.body.email}).select('+password').exec();
 
+        if(req.body.password == null)
+        {
+            return response_400(res, "No Password Found");
+        }
+
+
         const validPassword = await user.comparePassword(req.body.password);
 
         if(!validPassword)
