@@ -4,7 +4,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dbConfig = require('./src/config/db.config');
 const { response_200 } = require('./src/utils/responseCodes.utils');
-
+const authRouter = require('./src/routes/auth.routes');
+const User = require('./src/models/user.models');
 dotenv.config();
 const port = process.env.PORT || 5000;
 
@@ -25,9 +26,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.get('/', (req, res) => response_200(res, 'Server is running'));
-require('./src/routes/auth.routes')(app);
+app.use('/api/user', authRouter);
 
+app.get('/', (req, res) => response_200(res, 'Server is running'));
+
+// path to get all usrs
+app.get('/api/users', async (req, res) => {
+    const users = await User.find();
+    return response_200(res, 'Users fetched successfully', users);
+}
+);
 app.listen(port, () =>
     console.log(`🚀 Server running on port http://localhost:${port}/`)
 );

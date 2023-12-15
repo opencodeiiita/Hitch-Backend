@@ -1,5 +1,5 @@
 const User = require('../models/user.models')
-const {response_201, response_500} = require('../utils/responseCodes.utils')
+const {response_201, response_500, response_400, response_200} = require('../utils/responseCodes.utils')
 
 exports.signup = async (req, res) => {
     try {
@@ -37,3 +37,37 @@ exports.signup = async (req, res) => {
         return response_500(res, "Error creating user", err)
     }
 };
+
+exports.login = async(req, res) =>
+{
+    try {
+        const {email, password} = req.body;
+
+        if (!email || !password) {
+            return response_400(res, "Invalid Request: Missing required fields")
+        }
+        // select password
+        const userExists = await User.findOne({email: email}).select('password').exec();
+        if (!userExists) {
+            return response_400(res, "Invalid Request: User not found");
+        }
+        // check if password is correct
+        const passwordMatch = await userExists.comparePassword(password);
+        if (!passwordMatch) {
+            return response_401(res, "Invalid Request: Invalid Password");
+        }
+
+        return response_200(res, "User Logged In Successfully", {
+                username: user.username,
+                email: user.email,
+                name: user.name,
+                id: user._id,
+                token: await user.generateToken()
+            }
+        )
+    }
+    catch(err)
+    {
+        return response_500(res, "Error logging in", err)
+    }
+}
