@@ -33,7 +33,11 @@ const findUser = async(req, res, next) =>{
         {
             return response_400(res, "No User Found with the corresponding Email");
         }
-        else next();
+        else 
+        {
+            req.user = user;
+            next();
+        }
     }
     catch(err)
     {
@@ -44,7 +48,7 @@ const findUser = async(req, res, next) =>{
 const validatePassword = async(req,res, next)=>{
     try
     {
-        const user = await User.findOne({email: req.body.email}).select('+password').exec();
+        const user = req.user;
 
         if(req.body.password == null)
         {
