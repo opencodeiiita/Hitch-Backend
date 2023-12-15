@@ -20,6 +20,6 @@ app.get('/protected-resource', authorizationMiddleware, (req, res) => {
     res.json({ result: true, message: 'Access granted', userId: req.userId });
 });
 
-app.listen(3000, () => {
+app.listen(4000, () => {
     console.log('Server is running on port 3000');
 });
