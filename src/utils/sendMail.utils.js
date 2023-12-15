@@ -17,13 +17,13 @@ const transporter = nodemailer.createTransport({
     tls : { rejectUnauthorized: false }
   });
 
-async function sendMail(toEmail, body, html) {
+async function sendMail(toEmail,subject, body, html) {
     
     try {
       const mailOptions = {
         from: email,
         to: toEmail,
-        subject: 'Test Email',
+        subject: subject,
         text: body,
         html: html,
       };
