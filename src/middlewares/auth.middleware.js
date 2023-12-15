@@ -10,7 +10,6 @@ const ensureUniqueEmail = async (req, res, next) => {
     } catch (err) {
         return response_500(res, "Error creating user", err);
     }
-
 }
 
 const ensureUniqueUsername = async (req, res, next) => {
@@ -24,7 +23,61 @@ const ensureUniqueUsername = async (req, res, next) => {
     }
 };
 
+
+const findUser = async(req, res, next) =>{
+    try
+    {
+        const user = await User.findOne({email: req.body.email}).exec();
+
+        if(!user)
+        {
+            return response_400(res, "No User Found with the corresponding Email");
+        }
+        else 
+        {
+            req.user = user;
+            next();
+        }
+    }
+    catch(err)
+    {
+        return response_500(res, "Error in User Login", err);
+    }
+}
+
+const validatePassword = async(req,res, next)=>{
+    try
+    {
+        const user = req.user;
+
+        if(req.body.password == null)
+        {
+            return response_400(res, "No Password Found");
+        }
+
+
+        const validPassword = await user.comparePassword(req.body.password);
+
+        if(!validPassword)
+        {
+            return response_400(res, "Wrong Password");
+        }
+        else next();
+    }
+    catch(err)
+    {
+        return response_500(res, "Error in User Login", err);
+    }
+}
+
+
 exports.signupValidation = {
     ensureUniqueEmail,
     ensureUniqueUsername
 };
+
+exports.loginValidation = 
+{
+    findUser,
+    validatePassword
+}
