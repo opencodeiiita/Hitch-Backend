@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
   });
 
 async function sendMail(toEmail, body, html) {
-    console.log(email,password,"This is env")
+    
     try {
       const mailOptions = {
         from: email,
