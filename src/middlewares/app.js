@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-const { generateToken, authorizationMiddleware } = require('./auth.js');
+const { generateToken, authorizationMiddleware } = require('./authorization.js');
 
 app.post('/login', (req, res) => {
     // Assuming  a user ID from your MongoDB
