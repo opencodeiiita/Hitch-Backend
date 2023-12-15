@@ -1,6 +1,32 @@
 const User = require('../models/user.models')
 const {response_400, response_500} = require('../utils/responseCodes.utils')
+const sendError=require('../utils/responseCodes.utils.js');
+const jwt = require('jsonwebtoken');
+const secretKey = "777";
+const generateToken=User.methods.generatePasswordReset();
+function authorizationMiddleware(req, res, next) {
+    const token = req.cookies.token;
 
+    if (!token) {
+        return sendErrorResponse(res, 400 , 'Forbidden', 'No token provided');
+    }
+
+    try {
+        const decoded = jwt.verify(token, secretKey);
+        req.userId = decoded.userId;
+        next();
+    } catch (error) {
+        return sendErrorResponse(res, 401, 'Unauthorized', 'Invalid or expired token');
+    }
+}
+function sendErrorResponse(res, statusCode, err, message) {
+     if(statusCode=400){
+        sendError.response_400(res, message, err)
+     }
+     else if(statusCode=401){
+        sendError.response_401(res, message, err)
+     }
+}
 const ensureUniqueEmail = async (req, res, next) => {
     try {
         const user = await User.findOne({email: req.body.username}).exec();
@@ -81,3 +107,8 @@ exports.loginValidation =
     findUser,
     validatePassword
 }
+
+module.exports = {
+    generateToken,
+    authorizationMiddleware,
+};
