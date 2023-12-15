@@ -178,14 +178,13 @@ The following properties of every endpoint will be descibed in this file:
 
 ### Create Channel
 
-- **URL:** /api/channel/create
+- **URL:** /api/channel/create/in/:id       -> MongooDB ID for workspace
 - **Method:** POST
 - **Authorized:** True
 - **Request Body:**
-  - **userId:** userId            -> This is the id of the user who is creating the channel
-  - **name:** String                 So needed to verify that the user is the creator of the workspace
+  - **name:** String
   - **description:** String
-  - **workspaceId:** String     -> This is like username for workspace
+  - **type:** String            -> This contains the values defined in enums > chanelType.enums.js
 - **Success Status Code:** 201
 - **Response Data:**
 
@@ -208,10 +207,8 @@ The following properties of every endpoint will be descibed in this file:
 - **Method:** PUT
 - **Authorized:** True
 - **Request Body:**
-  - **userId:** userId              -> This is the id of the user who is signed in.
-  - **name:** String                   So needed to verify that the user is the creator of the workspace
+  - **name:** String
   - **description:** String
-  - **workspaceId:** String         -> This is like username for workspace
 - **Success Status Code:** 200
 - **Response Data:**
 
@@ -233,9 +230,6 @@ The following properties of every endpoint will be descibed in this file:
 - **URL:** /api/channel/delete/:id        -> MongooDB ID for channel
 - **Method:** DELETE
 - **Authorized:** True
-- **Request Body:**
-  - **userId:** userId              -> This is the id of the user who is signed in.
-                                       So needed to verify that the user is the creator of the workspace
 - **Success Status Code:** 200
 - **Response Data:**
 
@@ -281,7 +275,7 @@ The following properties of every endpoint will be descibed in this file:
 - **Response Data:**
 - **Query Parameters:**           -> Assume that the email or username is provided in partial form
   - **email:** String                and the server will return all the users which match the query
-  - **username:** String             assume only one of the query parameters will be provided
+  - **username:** String             select the one whose either username or email matches the query
 - **Response Data:**
 
     ```json
