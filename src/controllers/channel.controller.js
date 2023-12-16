@@ -16,7 +16,7 @@ exports.updateChannel = async (req, res) => {
             return response_400(res, "Please provide name or description")
         }
 
-        channel = await Channel.findByIdAndUpdate(req.body.channel.id, {
+        channel = await Channel.findByIdAndUpdate(req.body.channel._id, {
             name: name,
             description: description,
         });
