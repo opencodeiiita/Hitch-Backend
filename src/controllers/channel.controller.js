@@ -11,16 +11,17 @@ exports.updateChannel = async (req, res) => {
     try {
         const {name, description} = req.body;
 
-        if (!name || !description || !req.params.id) {
-            return response_400(res, "Invalid Request: Missing required fields")
+
+        if (!name && !description) {
+            return response_400(res, "Please provide name or description")
         }
 
-        channel = await Channel.findByIdAndUpdate(req.params.id, {
+        channel = await Channel.findByIdAndUpdate(req.body.channel.id, {
             name: name,
             description: description,
         });
 
-        return response_201(res, 'Channel Updated Successfully', {
+        return response_200(res, 'Channel Updated Successfully', {
             name: channel.name,
             description: channel.description,
             workspaceId: channel.workspaceId,
