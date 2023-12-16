@@ -4,14 +4,8 @@ const express = require("express");
 
 const router = express.Router();
 
-router.post("/register",
-  [signupValidation.ensureUniqueEmail, signupValidation.ensureUniqueUsername],
-  signup
-);
+router.post("/register", signup);
 
-router.post("/login", 
-[loginValidation.findUser, loginValidation.validatePassword],
-login
-);
+router.post("/login", login);
 
 module.exports = router;
