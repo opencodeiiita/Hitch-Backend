@@ -1,7 +1,7 @@
 const Channel = require('../models/channel.model');
 
 const {
-    response_201,
+    response_200,
     response_400,
     response_500
 } = require('../utils/responseCodes.utils')
