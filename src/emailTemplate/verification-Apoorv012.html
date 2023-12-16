@@ -4,10 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Email Verification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', sans-serif;
     }
   
     .bg-grid {
@@ -18,7 +21,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: rgba(169, 169, 169, 0.2);
+      background-color: white;
+      background-image: linear-gradient(to bottom, #1D0E2F 40%, rgba(0,0,0,0) 40%);
     }
   
     .bg-grid-lines {
@@ -34,18 +38,16 @@
       text-align: left;
       font-size: 1.875rem;
       font-weight: bold;
-      text-transform: uppercase;
     }
   
     .text-card-foreground {
       z-index: 10;
-      width: 100%;
+      width: media-;
       max-width: 500px;
       border-radius: 0.75rem;
-      border: 1px solid #ccc;
-      background-color: #fff;
+      background: #390A75;
+      margin: 0 50px;   
       padding: 2.125rem;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
   
     .p-33 {
@@ -60,6 +62,11 @@
       font-size: 1.25rem;
       font-weight: 600;
     }
+
+    .text-color-hitch {
+      color: #FFC728;
+
+    }
   
     p {
       font-size: 1rem;
@@ -72,7 +79,7 @@
       text-align: center;
       width: 100%;
       border: none;
-      border-radius: 0.375rem;
+      border-radius: 1rem;
       background-color: rgb(37 99 235);
       color: #fff;
       cursor: pointer;
@@ -122,6 +129,22 @@
     .mt-5 {
       margin-top: 1.25rem;
     }
+
+    .text-color-verify {
+      color: #fff;
+    }
+
+    .text-body {
+      color: #C5C5C5;
+    }
+
+    .text-buttontext {
+      color: #191A15;
+    }
+
+    .bg-verify-btn {
+      background-color: #FFC728;
+    }
   </style>
   
 </head>
@@ -129,20 +152,20 @@
 
 <div class="bg-grid">
   <div class="bg-grid-lines" aria-hidden="true"></div>
-  <h2 class="z-10 mb-8 pl-8 text-left text-3xl font-bold uppercase">HITCH</h2>
+  <h2 class="z-10 mb-8 pl-8 text-left text-3xl font-bold text-color-hitch">Hitch</h2>
   <br>
   <div class="text-card-foreground z-10 w-full rounded-lg border border-gray-300 bg-white p-8 shadow-sm md:w-3/4 lg:w-2/3 xl:w-1/2" data-v0-t="card">
     <div class="p-33 mb-5 flex flex-col space-y-1.5">
-      <h1 class="text-center text-2xl font-semibold">Verify this email address</h1>
+      <h1 class="text-center text-2xl font-semibold text-color-verify">Verify this email address</h1>
     </div>
     <div class="mb-8 p-3 text-left">
-      <p class="text-lg text-gray-700 dark:text-gray-400">
+      <p class="text-lg text-body dark:text-gray-400">
         Hi Apoorv,<br><br>
         Welcome to Hitch,<br><br>
         Please click the button below to verify your email address. You can ignore this message if you did not sign up for it. <br><br>
       </p>
     </div>
-    <button class="ring-offset-background focus-visible:ring-ring hover:bg-primary/90 inline-flex h-10 w-full items-center justify-center rounded-md bg-blue-600 px-4 py-3 text-lg font-medium text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">Verify email</button>
+    <button class="ring-offset-background focus-visible:ring-ring hover:bg-primary/90 inline-flex h-10 w-full items-center justify-center rounded-md bg-verify-btn px-4 py-3 text-lg font-medium text-buttontext transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">Verify email</button>
   </div><div class="z-10 mt-8 flex">
     <a class="text-gray-500 hover:text-gray-700 space-x-5" href="#">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
