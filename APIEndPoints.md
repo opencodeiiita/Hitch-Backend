@@ -33,7 +33,7 @@ The following properties of every endpoint will be descibed in this file:
 - **Success Status Code**: (Status Code of a successful response) 2xx
 - **Response Data**: (The format of data which is expected from the server with a successful response)
 
-## User
+## User Authentication
 
 ### Register
 
@@ -100,5 +100,195 @@ The following properties of every endpoint will be descibed in this file:
         "status": 'OK',
         "message": "User Logged Out Successfully",
         "data": null,
+    }
+    ```
+
+### Create Workspace
+
+- **URL:** /api/workspace/create
+- **Method:** POST
+- **Authorized:** True
+- **Request Body:**
+  - **userId:** userId            -> This is the id of the user who is creating the workspace
+  - **name:** String
+  - **description:** String
+  - **workspaceId:** String     -> This is like username for workspace
+- **Success Status Code:** 201
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Workspace Created Successfully",
+        "data": {
+            "name": String,
+            "description": String,
+            "workspaceId": String,
+            "id": String,
+        },
+    }
+    ```
+
+### Update Workspace
+
+- **URL:** /api/workspace/update/:id        -> MongooDB ID for workspace
+- **Method:** PUT
+- **Authorized:** True
+- **Request Body:**
+  - **userId:** userId              -> This is the id of the user who is signed in.
+  - **name:** String                   So needed to verify that the user is the creator of the workspace
+  - **description:** String
+  - **workspaceId:** String         -> This is like username for workspace
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Workspace Updated Successfully",
+        "data": {
+            "name": String,
+            "description": String,
+            "workspaceId": String,
+            "id": String,
+        },
+    }
+    ```
+
+### Delete Workspace
+
+- **URL:** /api/workspace/delete/:id        -> MongooDB ID for workspace
+- **Method:** DELETE
+- **Authorized:** True
+- **Request Body:**
+  - **userId:** userId              -> This is the id of the user who is signed in.
+                                       So needed to verify that the user is the creator of the workspace
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Workspace Deleted Successfully",
+        "data": null,
+    }
+    ```
+
+## Channels
+
+### Create Channel
+
+- **URL:** /api/channel/create/in/:id       -> MongooDB ID for workspace
+- **Method:** POST
+- **Authorized:** True
+- **Request Body:**
+  - **name:** String
+  - **description:** String
+  - **type:** String            -> This contains the values defined in enums > chanelType.enums.js
+- **Success Status Code:** 201
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Channel Created Successfully",
+        "data": {
+            "name": String,
+            "description": String,
+            "workspaceId": String,
+            "id": String,
+        },
+    }
+    ```
+
+### Update Channel
+
+- **URL:** /api/channel/update/:id        -> MongooDB ID for channel
+- **Method:** PUT
+- **Authorized:** True
+- **Request Body:**
+  - **name:** String
+  - **description:** String
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Channel Updated Successfully",
+        "data": {
+            "name": String,
+            "description": String,
+            "workspaceId": String,
+            "id": String,
+        },
+    }
+    ```
+
+### Delete Channel
+
+- **URL:** /api/channel/delete/:id        -> MongooDB ID for channel
+- **Method:** DELETE
+- **Authorized:** True
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Channel Deleted Successfully",
+        "data": null,
+    }
+    ```
+
+### Get Channels
+
+- **URL:** /api/channel/get/:workspaceId
+- **Method:** GET
+- **Authorized:** True
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Channels Found",
+        "data": [
+            {
+                "name": String,
+                "description": String,
+                "workspaceId": String,
+                "id": String,
+            },
+        ]
+    }
+    ```
+
+## User
+
+### Query User
+
+- **URL:** /api/user/query  
+- **Method:** GET
+- **Authorized:** True
+- **Success Status Code:** 200
+- **Response Data:**
+- **Query Parameters:**           -> Assume that the email or username is provided in partial form
+  - **email:** String                and the server will return all the users which match the query
+  - **username:** String             select the one whose either username or email matches the query
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "User Found",
+        "data": [
+            {
+                "username": String,
+                "email": String,
+                "name": String,
+                "id": String,
+            },
+        ]
     }
     ```

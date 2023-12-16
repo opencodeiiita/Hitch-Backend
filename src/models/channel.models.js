@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const CHANNEL_TYPE = require("../enums/channelType.enums");
 
 const ChannelSchema = new mongoose.Schema({
     __created: {
@@ -26,10 +27,10 @@ const ChannelSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    trpe: {
+    type: {
         type: String,
-        enum: ["public", "private"],
-        default: "public",
+        enum: CHANNEL_TYPE,
+        default: CHANNEL_TYPE.PUBLIC,
     },
     createdBy: {
         type: mongoose.Schema.ObjectId,
