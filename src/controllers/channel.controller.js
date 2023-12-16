@@ -1,4 +1,4 @@
-const Channel = require('../models/channel.model');
+const Channel = require('../models/channel.models');
 
 const {
     response_200,
