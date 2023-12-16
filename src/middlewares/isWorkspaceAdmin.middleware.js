@@ -5,7 +5,7 @@ const ensureUserIsAdmin = async (req, res, next) => {
   try 
   {
     const user = req.body.user;
-    const workspace = await Workspace.findOne({workspaceId: req.params.id,}).exec();
+    const workspace = await Workspace.findById(req.params.id);
 
     if(!workspace)
     {
