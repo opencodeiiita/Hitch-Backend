@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      color: #FFFFFF;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      background-color: #1B1633;
+      align-items: center;
+      padding: 20px;
+      border: 2px solid #FFC728;
+      border-radius: 10px;
+      margin: auto;
+      margin-top: 20px;
+    }
+
+    h1 {
+      color: #FFC728;
+      text-align: center;
+      margin: 0;
+    }
+
+    p {
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #FFC728;
+      color: #1B1633;
+      text-decoration: none;
+      border-radius: 5px;
+      text-align: center;
+      border: 2px solid #1B1633;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    .logo {
+      height: 55px;
+      width: 70px;
+    }
+    @media (max-width: 600px) {
+      .container {
+        max-width: 80%;
+        margin-top: 10px;
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+
+      .btn {
+        padding: 8px 16px;
+      }
+
+      .footer {
+        font-size: 10px;
+      }
+
+      .logo {
+        height: 40px;
+        width: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Email Verification</h1>
+    <p>Hello [User's Name],</p>
+    <p>Welcome to our community! We're thrilled to have you on board.</p>
+    <p>To complete the registration process, please click the link below to verify your email address:</p>
+    <p style="text-align: center;">
+      <a class="btn" href="[Verification Link]">Verify Email</a>
+    </p>
+    <p>If you did not sign up for our service, you can ignore this email.</p>
+    <p class="footer">Best Regards,<br> The Hitch Team</p>
+    <img class="logo" alt="company-logo" src="../public/logo.png">
+  </div>
+</body>
+</html>
