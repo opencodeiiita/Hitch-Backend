@@ -10,19 +10,19 @@ const {
 exports.createChannel = async (req,res) => {
     try {
         const {type, description, name} = req.body;
-        if(!type || !description || !name || !req.workspaceId)
+        if(!type || !description || !name || !req.workspace._id)
         {
             return response_400(res, "Invalid input! Please send all the required properties to create the channel");
         }
 
-        const channel = new Channel({...req.body,workspace:req.workspaceId});
+        const channel = new Channel({...req.body,workspace:req.workspace._id});
         const newChannel = await channel.save();
 
         return response_201(res,"Channel Created Successfully",{
-            createdBy:req.user.id,
+            createdBy:req.user._id,
             name: newChannel.name,
             description: newChannel.description,
-            workspaceId: newChannel.workspace,
+            workspaceId: req.workspace.workspaceId,
             id: newChannel._id,
         })
     }
