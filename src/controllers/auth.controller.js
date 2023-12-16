@@ -1,5 +1,5 @@
 const User = require('../models/user.models')
-const {response_201, response_500, response_400, response_200} = require('../utils/responseCodes.utils')
+const {response_201, response_500, response_400, response_200, response_401} = require('../utils/responseCodes.utils')
 
 exports.signup = async (req, res) => {
     try {

@@ -15,7 +15,9 @@ exports.createChannel = async (req,res) => {
             return response_400(res, "Invalid input! Please send all the required properties to create the channel");
         }
 
-        const channel = new Channel({...req.body,workspace:req.workspace._id});
+        const channel = new Channel({ ...req.body, workspace: req.workspace._id });       // bug!
+        // Needed to add the channel to the workspace's channels array
+
         const newChannel = await channel.save();
 
         return response_201(res,"Channel Created Successfully",{
@@ -41,7 +43,7 @@ exports.updateChannel = async (req, res) => {
             return response_400(res, "Please provide name or description")
         }
 
-        channel = await Channel.findByIdAndUpdate(req.body.channel._id, {
+        const channel = await Channel.findByIdAndUpdate(req.body.channel._id, {
             name: name,
             description: description,
         });
@@ -49,7 +51,7 @@ exports.updateChannel = async (req, res) => {
         return response_200(res, 'Channel Updated Successfully', {
             name: channel.name,
             description: channel.description,
-            workspaceId: channel.workspaceId,
+            workspaceId: req.workspace.workspaceId,
             id: channel._id,
         })
     } catch (err) {

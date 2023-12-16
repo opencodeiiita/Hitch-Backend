@@ -60,7 +60,7 @@ exports.updateWorkspace = async (req, res) => {
             return response_400(res, "Invalid Request: workspaceId already in use")
         }
 
-        workspace = await Workspace.findByIdAndUpdate(req.params.id, {
+        const workspace = await Workspace.findByIdAndUpdate(req.params.id, {
             name: name,
             description: description,
             workspaceId: workspaceId,
