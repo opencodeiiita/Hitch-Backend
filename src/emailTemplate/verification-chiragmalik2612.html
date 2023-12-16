@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        .template{
+            border: 2px solid rgb(217, 202, 235);
+            display: flex;
+            justify-content: center;
+            background-color: rgb(236, 240, 243);
+        }
+      
+        .card{
+            padding: 2rem;
+        }
+      
+        .heading{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-weight: 500;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+      
+        .subject{
+            font-weight: 600;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+      
+        .welcome{
+            margin: 1rem;
+        }
+      
+        .link{
+            text-align: center;
+        }
+      
+        .btn{
+            height: 3rem;
+            width: auto;
+            background-color: #1B1633;
+            color: white;    
+        }
+
+    </style>
+</head>
+<body>
+    <div class="template">
+    <div class="card">
+        <div class="heading" style="color: #1B1633;">Hitch</div>
+        <div class="subject" style="font-size: 1.3rem;">Email verification</div>
+        <div class="welcome">
+            Hi ${name},<br>
+            You're almost set to start with <b>Hitch</b>, A Collaborative Workspace Platform. Simply click the link below to verify your email address and get started.
+        </div>
+        <div class="link">
+            <a href="...."><button class="btn">Verify my email address</button></a>
+        </div>
+    </div>
+</div>
+    
+</body>
+</html>
