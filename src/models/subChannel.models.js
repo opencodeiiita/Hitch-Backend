@@ -24,9 +24,8 @@ const SubChannelSchema = new mongoose.Schema({
         },
     },
 
-    isGroupChat: {
-        type: Boolean,
-        default: true,
+    description: {
+        type: String,
     },
 
     messages: [

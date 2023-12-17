@@ -264,6 +264,157 @@ The following properties of every endpoint will be descibed in this file:
     }
     ```
 
+### Add user to channel
+
+- **URL:** /api/channel/addUser/:id
+- **Method:** POST
+- **Authorized:** True
+- **Request Body:**
+  - **userId:** String
+  - **role:** String
+- **Success Status Code:** 201
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "User Added to Channel Successfully",
+        "data": {
+            "name": String,
+            "description": String,
+            "workspaceId": String,
+            "id": String,
+        },
+    }
+    ```
+
+### Remove user from channel
+
+- **URL:** /api/channel/removeUser/:id
+- **Method:** DELETE
+- **Authorized:** True
+- **Request Body:**
+  - **userId:** String
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "User Removed from Channel Successfully",
+        "data": null,
+    }
+    ```
+
+### Get users in channel
+
+- **URL:** /api/channel/getUsers/:id
+- **Method:** GET
+- **Authorized:** True
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Users Found",
+        "data": [
+            {
+                "username": String,
+                "email": String,
+                "name": String,
+                "id": String,
+            },
+        ]
+    }
+    ```
+
+## SubChannels
+
+### Create SubChannel
+
+- **URL:** /api/subchannel/create/in/:id       -> MongooDB ID for channel
+- **Method:** POST
+- **Authorized:** True
+- **Request Body:**
+  - **name:** String
+  - **description:** String
+- **Success Status Code:** 201
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "SubChannel Created Successfully for channel {channel name}",
+        "data": {
+            "name": String,
+            "description": String,
+            "id": String,
+        },
+    }
+    ```
+
+### Update SubChannel
+
+- **URL:** /api/subchannel/update/:id        -> MongooDB ID for subchannel
+- **Method:** PUT
+- **Authorized:** True
+- **Request Body:**
+  - **name:** String
+  - **description:** String
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "SubChannel Updated Successfully",
+        "data": {
+            "name": String,
+            "description": String,
+            "id": String,
+        },
+    }
+    ```
+
+### Delete SubChannel
+
+- **URL:** /api/subchannel/delete/:id        -> MongooDB ID for subchannel
+- **Method:** DELETE
+- **Authorized:** True
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "SubChannel Deleted Successfully",
+        "data": null,
+    }
+    ```
+
+### Get SubChannels
+
+- **URL:** /api/subchannel/get/:id        -> MongooDB ID for channel
+- **Method:** GET
+- **Authorized:** True
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "SubChannels Found",
+        "data": [
+            {
+                "name": String,
+                "description": String,
+                "id": String,
+            },
+        ]
+    }
+    ```
+
 ## User
 
 ### Query User
