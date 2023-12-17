@@ -61,7 +61,7 @@ exports.updateChannel = async (req, res) => {
 
 exports.deleteChannel = async (req, res) => {
     try {
-        const channelId = parseInt(req.params.id);
+        const channelId = req.body.channel._id;
         await Channel.findByIdAndDelete(channelId);
 
         return response_200(res, 'Channel Deleted Successfully')
