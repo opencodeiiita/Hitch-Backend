@@ -11,7 +11,7 @@ export async function isChannelMember(req, res, next) {
         }
 
         const user = channel.members.find(member => member._id === userId);
-        if(!user || channel.workspace.createdBy !== user._id) {
+        if(!user || channel.workspace.createdBy !== userId) {
             return response_403(res, 'You are not authorized to perform this action');
         }
 
