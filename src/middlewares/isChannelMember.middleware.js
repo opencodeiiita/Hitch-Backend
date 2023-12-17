@@ -3,7 +3,7 @@ const {response_403, response_404, response_500} = require('../utils/responseCod
 
 export async function isChannelMember(req, res, next) {
     try {
-        const userId = req.body.user;
+        const userId = req.body.user._id;
         const channelId = parseInt(req.params.id);
         const channel = await Channel.findById(channelId).populate('workspace');
         if(!channel) {
@@ -11,7 +11,7 @@ export async function isChannelMember(req, res, next) {
         }
 
         const user = channel.members.find(member => member._id === userId);
-        if(!user) {
+        if(!user || channel.workspace.createdBy !== user._id) {
             return response_403(res, 'You are not authorized to perform this action');
         }
 
