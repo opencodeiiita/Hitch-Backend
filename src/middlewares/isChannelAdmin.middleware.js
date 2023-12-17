@@ -1,6 +1,7 @@
-import  Channel  from '../models/channel.models.js';
-import USER_ROLE from '../enums/userRoles.enums.js';
-import { response_404, response_403, response_500 } from '../utils/responseCodes.utils.js';
+const Channel = require('../models/channel.models.js');
+const USER_ROLE = require('../enums/userRoles.enums.js');
+const {response_403, response_404, response_500} = require('../utils/responseCodes.utils.js');
+
 export async function isChannelAdmin(req, res, next) {
     try {
         const user = req.body.user;
