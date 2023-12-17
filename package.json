@@ -1,7 +1,7 @@
 {
-    "name": "clipeverything-backend",
+    "name": "hitch-backend",
     "version": "1.0.0",
-    "description": "Backend for the project ClipEverything",
+    "description": "Backend for the project Hitch",
     "main": "app.js",
     "scripts": {
         "start": "node app.js",
