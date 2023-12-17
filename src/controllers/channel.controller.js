@@ -58,3 +58,14 @@ exports.updateChannel = async (req, res) => {
         return response_500(res, "Error updating channel", err)
     }
 }
+
+exports.deleteChannel = async (req, res) => {
+    try {
+        const channelId = parseInt(req.params.id);
+        await Channel.findByIdAndDelete(channelId);
+
+        return response_200(res, 'Channel Deleted Successfully')
+    } catch (err) {
+        return response_500(res, "Error deleting channel", err)
+    }
+}
