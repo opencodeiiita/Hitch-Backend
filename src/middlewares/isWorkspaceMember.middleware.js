@@ -6,7 +6,7 @@ const {
     response_404,
 } = require("../utils/responseCodes.utils");
 
-exports.ensureUserIsMember = async (req, res, next) => {
+exports.isWorksapceMember = async (req, res, next) => {
     try {
         const user = req.body.user;
         const workspace = await Workspace.findById(req.params.id);
