@@ -4,7 +4,8 @@ const {
     response_200,
     response_201,
     response_400,
-    response_500
+    response_500,
+    response_204
 } = require('../utils/responseCodes.utils');
 
 exports.createChannel = async (req,res) => {
@@ -67,5 +68,25 @@ exports.deleteChannel = async (req, res) => {
         return response_200(res, 'Channel Deleted Successfully')
     } catch (err) {
         return response_500(res, "Error deleting channel", err)
+    }
+}
+
+exports.getUsers = async(req,res)=>{
+    try{
+        const channelId = req.body.channel._id;
+        if(channelId){
+            return response_200(res,"Users Found",{
+                username:channel.username,
+                email:channel.email,
+                name:channel.email,
+                id:channel._id,
+
+            })
+        }
+        else{
+            return response_204(res,"Not Found");
+        }
+    }catch(err){
+        return response_500(res,"Unable to get Users");
     }
 }
