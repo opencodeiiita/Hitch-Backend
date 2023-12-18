@@ -119,12 +119,6 @@ exports.AddUserToChannel = async (req, res) => {
             return response_400(res, "Channel does not belong to the workspace");
         }
 
-        // const index = channel.members.indexOf(user._id);
-        // channel.members.splice(index, 1);
-
-        // const userIndex = user.channels.findIndex(channels => channels.channel=== channel._id  && channels.role=== 'NORMAL_USER');
-        // user.channels.splice(userIndex, 1);
-
         channel.members.push(user._id);
         user.channels.push({channel: channel._id, role: 'NORMAL_USER'});
 
