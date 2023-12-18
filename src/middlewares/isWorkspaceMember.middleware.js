@@ -15,10 +15,7 @@ exports.ensureUserIsMember = async (req, res, next) => {
             return response_404(res, "Workspace doesn't exist");
         }
 
-        const isMember = await Channel.exists({
-            workspace: workspace._id,
-            members: { $in: [user._id] },
-        });
+        const isMember = workspace.channels.some(channel => channel.members.includes(user._id));
 
         if (!isMember) {
             return response_403(res, "You are not authorized to perform this action");
