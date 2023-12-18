@@ -96,7 +96,7 @@ exports.getChannels = async (req, res)=>{
     }
 }
 
-exports.removeUserFromChannel = async (req, res) => {
+exports.AddUserToChannel = async (req, res) => {
     try {
         const{
             user,
@@ -109,9 +109,9 @@ exports.removeUserFromChannel = async (req, res) => {
             return response_400(res, "Please provide all the required properties");
         }
 
-        if(!channel.members.includes(user._id))
+        if(channel.members.includes(user._id))
         {
-            return response_400(res, "User is not a member of the channel");
+            return response_400(res, "User already a member of the channel");
         }
 
         if(channel.workspace!==workspace._id)
@@ -119,11 +119,14 @@ exports.removeUserFromChannel = async (req, res) => {
             return response_400(res, "Channel does not belong to the workspace");
         }
 
-        const index = channel.members.indexOf(user._id);
-        channel.members.splice(index, 1);
+        // const index = channel.members.indexOf(user._id);
+        // channel.members.splice(index, 1);
 
-        const userIndex = user.channels.findIndex(channels => channels.channel=== channel._id  && channels.role=== 'NORMAL_USER');
-        user.channels.splice(userIndex, 1);
+        // const userIndex = user.channels.findIndex(channels => channels.channel=== channel._id  && channels.role=== 'NORMAL_USER');
+        // user.channels.splice(userIndex, 1);
+
+        channel.members.push(user._id);
+        user.channels.push({channel: channel._id, role: 'NORMAL_USER'});
 
         await User.findByIdAndUpdate(
             user._id,
@@ -137,7 +140,12 @@ exports.removeUserFromChannel = async (req, res) => {
             { new: true }
         );
 
-        return response_200(res, "User removed from channel successfully", {user, channel, userIndex});
+        return response_200(res, "User Added to Channel Successfully", {
+            name: channel.name,
+            description: channel.description,
+            workspaceId: workspace._id,
+            id: channel._id,
+        });
 
 
     }
