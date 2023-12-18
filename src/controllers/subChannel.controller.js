@@ -1,4 +1,4 @@
-const subChannel = require('../models/subChannel.models');
+const SubChannel = require('../models/subChannel.models');
 
 const {
     response_201,
@@ -15,13 +15,11 @@ exports.createSubChannel = async (req, res) => {
             return response_400(res, "Please provide name or description")
         }
 
-        const subchannel = new subChannel({
+        const subchannel = new SubChannel({
             name: name,
             description: description,
             channel: channelId,
-        });
-
-        const newSubChannel = await subchannel.save();
+        }).save();
         return response_201(res, "SubChannel Created Successfully", {
             name: newSubChannel.name,
             description: newSubChannel.description,
