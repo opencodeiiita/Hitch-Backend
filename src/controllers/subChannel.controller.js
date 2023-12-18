@@ -60,7 +60,7 @@ exports.deleteSubChannel = async (req, res) => {
         const SubChannelId = req.SubChannel._id;
         await SubChannel.findByIdAndDelete(SubChannelId);
 
-        return response_200(res, 'Sub-Channel Deleted Successfully')
+        return response_200(res, 'SubChannel Deleted Successfully')
     } catch (err) {
         return response_500(res, "Error deleting subChannel", err)
     }
