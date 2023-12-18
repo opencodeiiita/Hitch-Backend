@@ -1,5 +1,6 @@
 const Channel = require('../models/channel.models');
 const Workspace = require('../models/workspace.models');
+const User = require('../models/user.models');
 
 const {
     response_200,
@@ -92,5 +93,56 @@ exports.getChannels = async (req, res)=>{
     catch(err)
     {
         return response_500(res, "Error fetching channels", err);
+    }
+}
+
+exports.removeUserFromChannel = async (req, res) => {
+    try {
+        const{
+            user,
+            channel,
+            workspace
+        } = req.body;
+
+        if(!user || !channel || !workspace)
+        {
+            return response_400(res, "Please provide all the required properties");
+        }
+
+        if(!channel.members.includes(user._id))
+        {
+            return response_400(res, "User is not a member of the channel");
+        }
+
+        if(channel.workspace!==workspace._id)
+        {
+            return response_400(res, "Channel does not belong to the workspace");
+        }
+
+        const index = channel.members.indexOf(user._id);
+        channel.members.splice(index, 1);
+
+        const userIndex = user.channels.findIndex(channels => channels.channel=== channel._id  && channels.role=== 'NORMAL_USER');
+        user.channels.splice(userIndex, 1);
+
+        await User.findByIdAndUpdate(
+            user._id,
+            { channels: user.channels },
+            { new: true }
+        );
+
+        await Channel.findByIdAndUpdate(
+            channel._id,
+            { members: channel.members },
+            { new: true }
+        );
+
+        return response_200(res, "User removed from channel successfully", {user, channel, userIndex});
+
+
+    }
+    catch(err)
+    {
+        return response_500(res, "Error removing user from channel", err);
     }
 }
