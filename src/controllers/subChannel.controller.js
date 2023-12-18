@@ -4,7 +4,8 @@ const {
     response_201,
     response_400,
     response_500,
-    response_200
+    response_200,
+    response_204
 } = require('../utils/responseCodes.utils');
 
 exports.createSubChannel = async (req, res) => {
@@ -63,5 +64,25 @@ exports.deleteSubChannel = async (req, res) => {
         return response_200(res, 'SubChannel Deleted Successfully')
     } catch (err) {
         return response_500(res, "Error deleting subChannel", err)
+    }
+}
+
+exports.getSubChannel = async(req,res) =>{
+    try{
+        const SubChannelId = req.SubChannel._id;
+        const result = await Subchannel.findById(SubChannelId);
+        if(result){
+            return response_200(res,"Subchannel Found",{
+                name:result.name,
+                description:result.description,
+                id:result._id,
+            })
+        }
+        else{
+            return response_204(res,"SubChannel not found")
+        }
+
+    }catch(err){
+        return response_500(res,"Error Finding The subchannel",err);
     }
 }
