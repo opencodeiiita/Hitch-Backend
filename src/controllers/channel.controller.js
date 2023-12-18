@@ -1,10 +1,12 @@
 const Channel = require('../models/channel.models');
+const Workspace = require('../models/workspace.models');
 
 const {
     response_200,
     response_201,
     response_400,
-    response_500
+    response_500,
+    response_204
 } = require('../utils/responseCodes.utils');
 
 exports.createChannel = async (req,res) => {
@@ -67,5 +69,33 @@ exports.deleteChannel = async (req, res) => {
         return response_200(res, 'Channel Deleted Successfully')
     } catch (err) {
         return response_500(res, "Error deleting channel", err)
+    }
+}
+
+exports.getChannels = async (req, res)=>{
+    try{
+        const workspace = req.workspace;
+    
+        const data = await Promise.all(workspace.channels.map(async (channelId) => { 
+            const channel = await Channel.findById(channelId);
+            return {
+                id: channel._id,
+                name: channel.name,
+                description: channel.description,
+                workspaceId: workspace.workspaceId,
+            }
+        }));
+        
+
+
+        if(data.length === 0){
+            return response_204(res, "No channels found");
+        }
+
+        return response_200(res, "Channels Found",data);
+    }   
+    catch{
+        return response_500(res, "Error fetching channels");
+
     }
 }
