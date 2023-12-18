@@ -87,15 +87,10 @@ exports.getChannels = async (req, res)=>{
         }));
         
 
-
-        if(data.length === 0){
-            return response_204(res, "No channels found");
-        }
-
         return response_200(res, "Channels Found",data);
     }   
-    catch{
-        return response_500(res, "Error fetching channels");
-
+    catch(err)
+    {
+        return response_500(res, "Error fetching channels", err);
     }
 }
