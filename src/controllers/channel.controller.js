@@ -1,5 +1,6 @@
 const Channel = require('../models/channel.models');
 const Workspace = require('../models/workspace.models');
+const User = require('../models/user.models');
 
 const {
     response_200,
@@ -92,5 +93,42 @@ exports.getChannels = async (req, res)=>{
     catch(err)
     {
         return response_500(res, "Error fetching channels", err);
+    }
+}
+
+exports.removeUserFromChannel = async (req,res)=>
+{
+    try {
+        const{channel,workspace} = req.body;
+        const userId = req.params.id;
+
+        if(!channel || !workspace || !userId)
+        {
+            return response_400(res,"Invalid properties");
+        }
+
+        if(channel.workspace!==workspace._id)
+        {
+            return response_400(res,"Channel does not belong to this workspace");
+        }
+
+        if(!channel.members.includes(userId))
+        {
+            return response_400(res,"User does not belong to this channel");
+        }
+
+        const filteredChannel = channel.members.filter(user=>user===userId);
+        const filteredUser = User.channels.filter(({channel})=>channel===channel._id);
+
+        const updatedChannel = await Channel.findByIdAndUpdate(channel._id,{members:filteredChannel});
+        const updatedUser = await User.findByIdAndUpdate(userId,{channels:filteredUser});
+
+        return response_200(res,"User Removed from Channel Successfully")
+
+
+    }
+    catch(error)
+    {
+        return response_500(res,"Error removing user from channel",error);
     }
 }
