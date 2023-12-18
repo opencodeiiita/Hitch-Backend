@@ -54,3 +54,14 @@ exports.updateSubChannel = async (req, res) => {
         return response_500(res, "Error updating the subChannel", err)
     }
 }
+
+exports.deleteSubChannel = async (req, res) => {
+    try {
+        const SubChannelId = req.SubChannel._id;
+        await SubChannel.findByIdAndDelete(SubChannelId);
+
+        return response_200(res, 'Sub-Channel Deleted Successfully')
+    } catch (err) {
+        return response_500(res, "Error deleting subChannel", err)
+    }
+}
