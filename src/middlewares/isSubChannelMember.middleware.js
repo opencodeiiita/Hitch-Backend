@@ -5,7 +5,7 @@ export async function isSubChannelMember(req, res, next) {
     try {
         const userId = req.body.user._id;
         const subChannelId = parseInt(req.params.id);
-        const subChannel = await SubChannel.findById(subChannelId).populate('channel');
+        const subChannel = await SubChannel.findById(subChannelId).populate('channel').populate('channel.workspace');
         if(!subChannel) {
             return response_404(res, 'SubChannel not found');
         }
