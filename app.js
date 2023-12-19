@@ -9,10 +9,7 @@ const User = require('./src/models/user.models');
 dotenv.config();
 const port = process.env.PORT || 5000;
 
-mongoose.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`).then(() => {
     console.log("Successfully connected to MongoDB.");
   })
   .catch(err => {
