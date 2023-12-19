@@ -1,6 +1,7 @@
 const Channel = require('../models/channel.models');
 const Workspace = require('../models/workspace.models');
 const User = require('../models/user.models');
+const USER_ROLE = require('../enums/userRoles.enums');
 
 const {
     response_200,
@@ -104,23 +105,13 @@ exports.AddUserToChannel = async (req, res) => {
             workspace
         } = req.body;
 
-        if(!user || !channel || !workspace)
-        {
-            return response_400(res, "Please provide all the required properties");
-        }
-
         if(channel.members.includes(user._id))
         {
             return response_400(res, "User already a member of the channel");
         }
 
-        if(channel.workspace!==workspace._id)
-        {
-            return response_400(res, "Channel does not belong to the workspace");
-        }
-
         channel.members.push(user._id);
-        user.channels.push({channel: channel._id, role: 'NORMAL_USER'});
+        user.channels.push({channel: channel._id, role: USER_ROLE.NORMAL_USER});
 
         await User.findByIdAndUpdate(
             user._id,
@@ -139,6 +130,8 @@ exports.AddUserToChannel = async (req, res) => {
             description: channel.description,
             workspaceId: workspace._id,
             id: channel._id,
+            channel,
+            user
         });
 
 
