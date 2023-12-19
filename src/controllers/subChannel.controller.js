@@ -73,8 +73,8 @@ exports.getSubChannel = async (req, res) => {
       const channel = await Channel.findById(ChannelId).populate("subChannels");
       const subChannels = channel.subChannels;
       function selectFewerProps(x) {
-        const { name, description, id } = x;
-        return { name, description, id };
+        const { name, description, _id } = x;
+        return { name, description, _id };
       }
       const newSubChannels = subChannels.map(selectFewerProps);
       return response_200(res, "Subchannel Found", newSubChannels);
