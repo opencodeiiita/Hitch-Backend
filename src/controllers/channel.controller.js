@@ -141,3 +141,19 @@ exports.AddUserToChannel = async (req, res) => {
         return response_500(res, "Error removing user from channel", err);
     }
 }
+
+exports.getUsers = async (req, res) => {
+    try {
+      const ChannelId = req.channel._id;
+      const channel = await Channel.findById(ChannelId).populate("members");
+      const users = channel.members;
+      function selectFewerProps(x) {
+        const { username, email, name, _id } = x;
+        return { username, email, name, _id };
+      }
+      const newUsers = users.map(selectFewerProps);
+      return response_200(res, "Users Found", newUsers);
+    } catch (err) {
+      return response_500(res, "Error finding users", err);
+    }
+  };
