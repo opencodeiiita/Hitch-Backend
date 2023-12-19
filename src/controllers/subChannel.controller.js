@@ -69,7 +69,7 @@ exports.deleteSubChannel = async (req, res) => {
 
 exports.getSubChannel = async (req, res) => {
     try {
-      const ChannelId = req.params.id;
+      const ChannelId = req.Channel._id;
       const channel = await Channel.findById(ChannelId).populate("subChannels");
       const subChannels = channel.subChannels;
       function selectFewerProps(x) {
