@@ -1,6 +1,7 @@
 const Channel = require('../models/channel.models');
 const Workspace = require('../models/workspace.models');
 const User = require('../models/user.models');
+const USER_ROLE = require('../enums/userRoles.enums');
 
 const {
     response_200,
@@ -114,5 +115,50 @@ exports.removeUserFromChannel = async (req,res)=>
     catch(error)
     {
         return response_500(res,"Error removing user from channel",error);
+    }
+}
+
+exports.AddUserToChannel = async (req, res) => {
+    try {
+        const{
+            user,
+            channel,
+            workspace
+        } = req.body;
+
+        if(channel.members.includes(user._id))
+        {
+            return response_400(res, "User already a member of the channel");
+        }
+
+        channel.members.push(user._id);
+        user.channels.push({channel: channel._id, role: USER_ROLE.NORMAL_USER});
+
+        await User.findByIdAndUpdate(
+            user._id,
+            { channels: user.channels },
+            { new: true }
+        );
+
+        await Channel.findByIdAndUpdate(
+            channel._id,
+            { members: channel.members },
+            { new: true }
+        );
+
+        return response_200(res, "User Added to Channel Successfully", {
+            name: channel.name,
+            description: channel.description,
+            workspaceId: workspace._id,
+            id: channel._id,
+            channel,
+            user
+        });
+
+
+    }
+    catch(err)
+    {
+        return response_500(res, "Error removing user from channel", err);
     }
 }
