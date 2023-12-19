@@ -99,29 +99,13 @@ exports.getChannels = async (req, res)=>{
 exports.removeUserFromChannel = async (req,res)=>
 {
     try {
-        const{channel,workspace} = req.body;
-        const userId = req.params.id;
+        const{user,channel} = req.body;
 
-        if(!channel || !workspace || !userId)
-        {
-            return response_400(res,"Invalid properties");
-        }
-
-        if(channel.workspace!==workspace._id)
-        {
-            return response_400(res,"Channel does not belong to this workspace");
-        }
-
-        if(!channel.members.includes(userId))
-        {
-            return response_400(res,"User does not belong to this channel");
-        }
-
-        const filteredChannel = channel.members.filter(user=>user===userId);
+        const filteredChannel = channel.members.filter(user=>user===user._id);
         const filteredUser = User.channels.filter(({channel})=>channel===channel._id);
 
         const updatedChannel = await Channel.findByIdAndUpdate(channel._id,{members:filteredChannel});
-        const updatedUser = await User.findByIdAndUpdate(userId,{channels:filteredUser});
+        const updatedUser = await User.findByIdAndUpdate(user._id,{channels:filteredUser});
 
         return response_200(res,"User Removed from Channel Successfully")
 
