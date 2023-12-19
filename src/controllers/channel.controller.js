@@ -94,3 +94,8 @@ exports.getChannels = async (req, res)=>{
         return response_500(res, "Error fetching channels", err);
     }
 }
+
+exports.getUsers = async(req,res)=>{
+    const channelId = req.body;
+    
+}
