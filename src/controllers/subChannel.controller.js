@@ -1,5 +1,6 @@
 const subChannelModels = require('../models/subChannel.models');
 const SubChannel = require('../models/subChannel.models');
+const Channel = require("../models/channel.models");
 const {
     response_201,
     response_400,
@@ -65,3 +66,19 @@ exports.deleteSubChannel = async (req, res) => {
         return response_500(res, "Error deleting subChannel", err)
     }
 }
+
+exports.getSubChannel = async (req, res) => {
+    try {
+      const ChannelId = req.params.id;
+      const channel = await Channel.findById(ChannelId).populate("subChannels");
+      const subChannels = channel.subChannels;
+      function selectFewerProps(x) {
+        const { name, description, id } = x;
+        return { name, description, id };
+      }
+      const newSubChannels = subChannels.map(selectFewerProps);
+      return response_200(res, "Subchannel Found", newSubChannels);
+    } catch (err) {
+      return response_500(res, "Error Finding The subchannel", err);
+    }
+  };
