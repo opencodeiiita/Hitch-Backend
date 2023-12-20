@@ -25,18 +25,17 @@ exports.queryUser = async (req, res) => {
             return response_404(res, "No user found");
         }
 
-        return response_200(res, "User Found", {
-            users: users.map((user) => {
-                return {
-                    username: user.username,
-                    email: user.email,
-                    name: user.name,
-                    profilePicUrl: user.profilePicUrl,
-                    id: user._id,
-                };
-            }),
-        
+        const userList = users.map((user) => {
+            return {
+                username: user.username,
+                email: user.email,
+                name: user.name,
+                profilePicUrl: user.profilePicUrl,
+                id: user._id,
+            };
         });
+
+        return response_200(res, "User Found", userList);
     } catch (error) {
         return response_500(res, "Error querying user", error);
     }
