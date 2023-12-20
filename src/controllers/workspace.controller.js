@@ -50,21 +50,20 @@ exports.updateWorkspace = async (req, res) => {
     try {
         const { name, description, workspaceId } = req.body;
 
-        if (
-            !name ||
-            !description ||
-            !workspaceId 
-        ) {
+        if (!name && !description && !workspaceId  ) 
+        {
             return response_400(
                 res,
-                "Invalid Request: Missing required fields"
+                "Invalid Request: No field to update"
             );
         }
 
         const workspaceIdExists = await Workspace.findOne({
             workspaceId: workspaceId,
         }).exec();
-        if (workspaceIdExists) {
+
+        if(workspaceIdExists)
+        {
             return response_400(
                 res,
                 "Invalid Request: workspaceId already in use"
@@ -78,9 +77,9 @@ exports.updateWorkspace = async (req, res) => {
         });
 
         return response_200(res, "Workspace Updated Successfully", {
-            name: workspace.name,
+            name: workspace.name ,
             description: workspace.description,
-            workspaceId: workspace.workspaceId,
+            workspaceId: workspace.workspaceId ,
             id: workspace._id,
         });
     } catch (err) {
