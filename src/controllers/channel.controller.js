@@ -190,3 +190,24 @@ exports.getUsers = async (req, res) => {
         return response_500(res, "Error finding users", err);
     }
 };
+
+exports.createDefaultChannel = async(req,res)=>{
+    try{
+        const { name, description, workspaceId, user} = req.body;
+        const defChannel = new Channel({
+            name:"General",
+            workspace: workspaceId,
+            createdBy: user._id,
+        })
+        const savedChannel = await defChannel.save();
+
+        const updatedWorkspace = await Workspace.findByIdAndUpdate(
+            workspace._id,
+            {
+                $push: { channels: savedChannel._id },
+            }
+        );
+    }catch(err){
+        return response_500(res,"Error creating default Channel",err);
+    }
+}
