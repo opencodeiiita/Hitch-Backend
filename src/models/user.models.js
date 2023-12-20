@@ -50,6 +50,11 @@ const UserSchema = new mongoose.Schema({
         },
     },
 
+    profilePicUrl: {
+        type: String,
+        default: "",
+    },
+
     // store the channels of the user with there role in the channel
 
     channels: [

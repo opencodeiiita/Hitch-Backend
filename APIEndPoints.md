@@ -438,6 +438,7 @@ The following properties of every endpoint will be descibed in this file:
                 "username": String,
                 "email": String,
                 "name": String,
+                "profilePicUrl": String,
                 "id": String,
             },
         ]
