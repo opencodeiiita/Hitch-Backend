@@ -146,7 +146,7 @@ exports.removeUserFromChannel = async (req,res)=>
 {
     try {
         const{user,channel} = req.body;
-        const userToBeRemovedId = req.params.id;
+        const userToBeRemovedId = req.body.userId;
 
         if(!channel.members.includes(userToBeRemovedId))
         {
@@ -155,8 +155,8 @@ exports.removeUserFromChannel = async (req,res)=>
 
         const userToBeRemoved = await User.findById(userToBeRemovedId);
 
-        const filteredChannel = channel.members.filter(user=>user===userToBeRemovedId);
-        const filteredUser = userToBeRemoved.channels.filter(({channel})=>channel===channel._id);
+        const filteredChannel = channel.members.filter(user=>user!==userToBeRemovedId);
+        const filteredUser = userToBeRemoved.channels.filter(({channel})=>channel!==channel._id);
 
         const updatedChannel = await Channel.findByIdAndUpdate(channel._id,{members:filteredChannel});
         const updatedUser = await User.findByIdAndUpdate(userToBeRemovedId,{channels:filteredUser});
