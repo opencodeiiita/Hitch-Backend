@@ -12,7 +12,7 @@ const {
 
 exports.createChannel = async (req, res) => {
     try {
-        const { type, description, name } = req.body;
+        const { type, description, name, user, workspace } = req.body;
         if (!type || !description || !name || !req.workspace._id) {
             return response_400(
                 res,
@@ -21,19 +21,27 @@ exports.createChannel = async (req, res) => {
         }
 
         const channel = new Channel({
-            ...req.body,
-            workspace: req.workspace._id,
-        }); // bug!
-        // Needed to add the channel to the workspace's channels array
+            type,
+            description,
+            name,
+            workspace: workspace._id,
+            createdBy: user._id,
+        });
 
-        const newChannel = await channel.save();
+        const savedChannel = await channel.save();
+
+        const updatedWorkspace = await Workspace.findByIdAndUpdate(
+            workspace._id,
+            {
+                $push: { channels: savedChannel._id },
+            }
+        );
 
         return response_201(res, "Channel Created Successfully", {
             createdBy: req.user._id,
-            name: newChannel.name,
-            description: newChannel.description,
-            workspaceId: req.workspace.workspaceId,
-            id: newChannel._id,
+            name: savedChannel.name,
+            description: savedChannel.description,
+            id: savedChannel._id,
         });
     } catch (error) {
         return response_500(res, "Error creating channel", error);
@@ -77,7 +85,7 @@ exports.deleteChannel = async (req, res) => {
 
 exports.getChannels = async (req, res) => {
     try {
-        const workspace = req.workspace;
+        const workspace = req.body.workspace;
 
         const data = await Promise.all(
             workspace.channels.map(async (channelId) => {
@@ -138,7 +146,7 @@ exports.AddUserToChannel = async (req, res) => {
 
 exports.removeUserFromChannel = async (req, res) => {
     try {
-        const { user, channel } = req.body;
+        const { channel } = req.body;
         const userToBeRemovedId = req.body.userId;
 
         if (!channel.members.includes(userToBeRemovedId)) {
