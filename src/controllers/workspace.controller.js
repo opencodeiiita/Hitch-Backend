@@ -58,6 +58,17 @@ exports.updateWorkspace = async (req, res) => {
             );
         }
 
+        const workspaceIdExists = await Workspace.findOne({
+            workspaceId: workspaceId,
+        }).exec();
+
+        if(workspaceIdExists)
+        {
+            return response_400(
+                res,
+                "Invalid Request: workspaceId already in use"
+            );
+        }
 
         const workspace = await Workspace.findByIdAndUpdate(req.body.workspace._id, {
             name: name,
@@ -66,9 +77,9 @@ exports.updateWorkspace = async (req, res) => {
         });
 
         return response_200(res, "Workspace Updated Successfully", {
-            name: name || workspace.name,
-            description: description || workspace.description,
-            workspaceId: workspaceId || workspace.workspaceId,
+            name: workspace.name ,
+            description: workspace.description,
+            workspaceId: workspace.workspaceId ,
             id: workspace._id,
         });
     } catch (err) {
