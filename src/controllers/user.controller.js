@@ -14,25 +14,18 @@ exports.queryUser = async (req, res) => {
             return response_400(res, "Missing required fields");
         }
 
-        const user = await User.find({
+        const users = await User.find({
             $or: [
                 { email: { $regex: email, $options: "i" } },
                 { username: { $regex: username, $options: "i" } },
             ],
         }).exec();
 
-        if (!user) {
-            return response_404(res, "User not found");
+        if (!users) {
+            return response_404(res, "No user found");
         }
 
-        return response_200(res, "User Found", {
-            name: user.name,
-            username: user.username,
-            email: user.email,
-            profilePicUrl: user.profilePicUrl,
-            id: user._id,
-        });
-
+        return response_200(res, "User Found", users);
     } catch (error) {
         return response_500(res, "Error querying user", error);
     }
