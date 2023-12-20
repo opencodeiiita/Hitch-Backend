@@ -109,7 +109,6 @@ The following properties of every endpoint will be descibed in this file:
 - **Method:** POST
 - **Authorized:** True
 - **Request Body:**
-  - **userId:** userId            -> This is the id of the user who is creating the workspace
   - **name:** String
   - **description:** String
   - **workspaceId:** String     -> This is like username for workspace
@@ -135,7 +134,6 @@ The following properties of every endpoint will be descibed in this file:
 - **Method:** PUT
 - **Authorized:** True
 - **Request Body:**
-  - **userId:** userId              -> This is the id of the user who is signed in.
   - **name:** String                   So needed to verify that the user is the creator of the workspace
   - **description:** String
   - **workspaceId:** String         -> This is like username for workspace
@@ -160,9 +158,6 @@ The following properties of every endpoint will be descibed in this file:
 - **URL:** /api/workspace/delete/:id        -> MongooDB ID for workspace
 - **Method:** DELETE
 - **Authorized:** True
-- **Request Body:**
-  - **userId:** userId              -> This is the id of the user who is signed in.
-                                       So needed to verify that the user is the creator of the workspace
 - **Success Status Code:** 200
 - **Response Data:**
 
