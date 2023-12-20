@@ -9,8 +9,7 @@ const {
 
 exports.createWorkspace = async (req, res) => {
     try {
-        const { name, description, workspaceId} = req.body;
-        console.log(req.user);
+        const { name, description, workspaceId, user} = req.body;
         if (!name || !description || !workspaceId ) {
             return response_400(
                 res,
@@ -29,10 +28,10 @@ exports.createWorkspace = async (req, res) => {
         }
 
         const workspace = new Workspace({
-            name: req.body.name,
-            description: req.body.description,
-            workspaceId: req.body.workspaceId,
-            createdBy: req.userId,
+            name: name,
+            description: description,
+            workspaceId: workspaceId,
+            createdBy: user._id,
         });
 
         const savedWorkspace = await workspace.save();

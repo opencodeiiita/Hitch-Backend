@@ -23,8 +23,7 @@ async function isAuthorized(req, res, next) {
             return response_404(res, "User not found");
         }
 
-        req.user = user;
-        req.userId = user._id;
+        req.body.user = user;
 
         next();
     } catch (err) {
