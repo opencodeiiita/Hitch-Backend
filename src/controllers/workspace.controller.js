@@ -9,9 +9,9 @@ const {
 
 exports.createWorkspace = async (req, res) => {
     try {
-        const { name, description, workspaceId, userId } = req.body;
+        const { name, description, workspaceId, user } = req.body;
 
-        if (!name || !description || !workspaceId || !userId) {
+        if (!name || !description || !workspaceId ) {
             return response_400(
                 res,
                 "Invalid Request: Missing required fields"
@@ -32,7 +32,7 @@ exports.createWorkspace = async (req, res) => {
             name: req.body.name,
             description: req.body.description,
             workspaceId: req.body.workspaceId,
-            createdBy: req.body.userId,
+            createdBy: user._id,
         });
 
         const savedWorkspace = await workspace.save();
@@ -49,29 +49,16 @@ exports.createWorkspace = async (req, res) => {
 
 exports.updateWorkspace = async (req, res) => {
     try {
-        const { name, description, workspaceId, userId } = req.body;
+        const { name, description, workspaceId } = req.body;
 
         if (
             !name ||
             !description ||
-            !workspaceId ||
-            !userId ||
-            !req.params.id
+            !workspaceId 
         ) {
             return response_400(
                 res,
                 "Invalid Request: Missing required fields"
-            );
-        }
-
-        const workspaceExists = await Workspace.findById(req.params.id);
-        if (!workspaceExists) {
-            return response_400(res, "Invalid Request: Workspace not found");
-        }
-        if (workspaceExists.createdBy !== userId) {
-            return response_403(
-                res,
-                "Invalid Request: User not authorized to update workspace"
             );
         }
 
@@ -85,13 +72,13 @@ exports.updateWorkspace = async (req, res) => {
             );
         }
 
-        const workspace = await Workspace.findByIdAndUpdate(req.params.id, {
+        const workspace = await Workspace.findByIdAndUpdate(req.body.workspace._id, {
             name: name,
             description: description,
             workspaceId: workspaceId,
         });
 
-        return response_201(res, "Workspace Updated Successfully", {
+        return response_200(res, "Workspace Updated Successfully", {
             name: workspace.name,
             description: workspace.description,
             workspaceId: workspace.workspaceId,
@@ -104,26 +91,7 @@ exports.updateWorkspace = async (req, res) => {
 
 exports.deleteWorkspace = async (req, res) => {
     try {
-        if (!req.body.userId || !req.params.id) {
-            return response_400(
-                res,
-                "Invalid Request: Missing required fields"
-            );
-        }
-
-        const workspaceExists = await Workspace.findById(req.params.id);
-        if (!workspaceExists) {
-            return response_400(res, "Invalid Request: Workspace not found");
-        }
-        if (workspaceExists.createdBy !== req.body.userId) {
-            return response_403(
-                res,
-                "Invalid Request: User not authorized to delete workspace"
-            );
-        }
-
-        await Workspace.findByIdAndDelete(req.params.id);
-
+        await Workspace.findByIdAndDelete(req.body.workspace._id);
         return response_200(res, "Workspace Deleted Successfully");
     } catch (err) {
         return response_500(res, "Error deleting workspace", err);
