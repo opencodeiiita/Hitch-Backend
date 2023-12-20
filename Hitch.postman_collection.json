@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "93aeb357-4694-4c72-a38f-85075b0a7ded",
+		"name": "Hitch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25553200"
+	},
+	"item": [
+		{
+			"name": "User Auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"swaroop\",\r\n    \"email\": \"swaroop123hh4bhhj@gmail.com\",\r\n    \"password\": \"swaroop\",\r\n    \"username\": \"sdf234jhhho\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/user/register"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"swaroop1234bhhj@gmail.com\",\r\n    \"password\": \"swaroop\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/user/login"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Workspace",
+			"item": [
+				{
+					"name": "Create workspace",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
