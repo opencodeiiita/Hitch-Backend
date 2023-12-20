@@ -37,7 +37,7 @@ The following properties of every endpoint will be descibed in this file:
 
 ### Register
 
-- **URL:** /api/user/register
+- **URL:** /api/auth/register
 - **Method:** POST
 - **Request Body:**
   - **username:** String
@@ -64,7 +64,7 @@ The following properties of every endpoint will be descibed in this file:
 
 ### Login
 
-- **URL:** /api/user/login
+- **URL:** /api/auth/login
 - **Method:** POST
 - **Request Body:**
   - **email:** String
@@ -89,7 +89,7 @@ The following properties of every endpoint will be descibed in this file:
 
 ### Logout
 
-- **URL:** /api/user/logout
+- **URL:** /api/auth/logout
 - **Method:** POST
 - **Authorized:** True
 - **Success Status Code:** 200
