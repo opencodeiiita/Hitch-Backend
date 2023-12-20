@@ -41,9 +41,15 @@ app.get("/api/users", async (req, res) => {
     const users = await User.find();
     return response_200(res, "Users fetched successfully", users);
 });
-const workspaceRoutes = require("./src/routes/workspace.routes");
 
+const workspaceRoutes = require("./src/routes/workspace.routes");
 app.use("/api/workspace", workspaceRoutes);
+
+
+const channelRoutes = require("./src/routes/channel.routes");
+app.use("/api/channel", channelRoutes);
+
+
 app.listen(port, () =>
     console.log(`🚀 Server running on port http://localhost:${port}/`)
 );

@@ -13,7 +13,7 @@ const {
 exports.createChannel = async (req, res) => {
     try {
         const { type, description, name, user, workspace } = req.body;
-        if (!type || !description || !name || !req.workspace._id) {
+        if (!type || !description || !name || !workspace._id.toString()) {
             return response_400(
                 res,
                 "Invalid input! Please send all the required properties to create the channel"
@@ -24,24 +24,27 @@ exports.createChannel = async (req, res) => {
             type,
             description,
             name,
-            workspace: workspace._id,
-            createdBy: user._id,
+            workspace: workspace._id.toString(),
+            createdBy: user._id.toString(),
         });
 
         const savedChannel = await channel.save();
+        console.log(savedChannel)
 
         const updatedWorkspace = await Workspace.findByIdAndUpdate(
-            workspace._id,
+            workspace._id.toString(),
             {
-                $push: { channels: savedChannel._id },
+                $push: { channels: savedChannel._id.toString() },
             }
         );
 
+        console.log(updatedWorkspace)
+
         return response_201(res, "Channel Created Successfully", {
-            createdBy: req.user._id,
+            createdBy: user._id.toString(),
             name: savedChannel.name,
             description: savedChannel.description,
-            id: savedChannel._id,
+            id: savedChannel._id.toString(),
         });
     } catch (error) {
         return response_500(res, "Error creating channel", error);
