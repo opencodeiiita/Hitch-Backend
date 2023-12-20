@@ -14,10 +14,10 @@ const cookieParser = require("cookie-parser");
 mongoose
     .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
     .then(() => {
-        console.log("Successfully connected to MongoDB.");
+        console.log("🎉 Successfully connected to MongoDB.");
     })
     .catch((err) => {
-        console.error("Failed to connect to MongoDB", err);
+        console.error("💩 Failed to connect to MongoDB\n", err);
         process.exit();
     });
 
