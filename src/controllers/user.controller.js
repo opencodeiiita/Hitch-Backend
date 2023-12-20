@@ -25,7 +25,13 @@ exports.queryUser = async (req, res) => {
             return response_404(res, "User not found");
         }
 
-        return response_200(res, "User Found", user);
+        return response_200(res, "User Found", {
+            name: user.name,
+            username: user.username,
+            email: user.email,
+            profilePicUrl: user.profilePicUrl,
+            id: user._id,
+        });
 
     } catch (error) {
         return response_500(res, "Error querying user", error);
