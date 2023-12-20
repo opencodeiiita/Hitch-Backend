@@ -207,6 +207,11 @@ exports.createDefaultChannel = async(req,res)=>{
                 $push: { channels: savedChannel._id },
             }
         );
+        return response_201(res, "Default Channel Created Successfully", {
+            createdBy: req.user._id,
+            name: savedChannel.name,
+            id: savedChannel._id,
+        });
     }catch(err){
         return response_500(res,"Error creating default Channel",err);
     }
