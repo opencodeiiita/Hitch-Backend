@@ -8,7 +8,6 @@ const {
 async function isAuthorized(req, res, next) {
     const authToken = req.cookies.token || req.token;
 
-    // console.log(authToken);
     if (!authToken) {
         return response_404(res, "No token provided");
     }
