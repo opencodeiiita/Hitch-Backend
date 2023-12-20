@@ -1,50 +1,51 @@
-const Channel = require('../models/channel.models');
-const Workspace = require('../models/workspace.models');
-const User = require('../models/user.models');
-const USER_ROLE = require('../enums/userRoles.enums');
+const Channel = require("../models/channel.models");
+const Workspace = require("../models/workspace.models");
+const User = require("../models/user.models");
+const USER_ROLE = require("../enums/userRoles.enums");
 
 const {
     response_200,
     response_201,
     response_400,
     response_500,
-    response_204
-} = require('../utils/responseCodes.utils');
+} = require("../utils/responseCodes.utils");
 
-exports.createChannel = async (req,res) => {
+exports.createChannel = async (req, res) => {
     try {
-        const {type, description, name} = req.body;
-        if(!type || !description || !name || !req.workspace._id)
-        {
-            return response_400(res, "Invalid input! Please send all the required properties to create the channel");
+        const { type, description, name } = req.body;
+        if (!type || !description || !name || !req.workspace._id) {
+            return response_400(
+                res,
+                "Invalid input! Please send all the required properties to create the channel"
+            );
         }
 
-        const channel = new Channel({ ...req.body, workspace: req.workspace._id });       // bug!
+        const channel = new Channel({
+            ...req.body,
+            workspace: req.workspace._id,
+        }); // bug!
         // Needed to add the channel to the workspace's channels array
 
         const newChannel = await channel.save();
 
-        return response_201(res,"Channel Created Successfully",{
-            createdBy:req.user._id,
+        return response_201(res, "Channel Created Successfully", {
+            createdBy: req.user._id,
             name: newChannel.name,
             description: newChannel.description,
             workspaceId: req.workspace.workspaceId,
             id: newChannel._id,
-        })
-    }
-    catch(error)
-    {
+        });
+    } catch (error) {
         return response_500(res, "Error creating channel", error);
     }
-}
+};
 
 exports.updateChannel = async (req, res) => {
     try {
-        const {name, description} = req.body;
-
+        const { name, description } = req.body;
 
         if (!name && !description) {
-            return response_400(res, "Please provide name or description")
+            return response_400(res, "Please provide name or description");
         }
 
         const channel = await Channel.findByIdAndUpdate(req.body.channel._id, {
@@ -52,66 +53,63 @@ exports.updateChannel = async (req, res) => {
             description: description,
         });
 
-        return response_200(res, 'Channel Updated Successfully', {
+        return response_200(res, "Channel Updated Successfully", {
             name: channel.name,
             description: channel.description,
             workspaceId: req.workspace.workspaceId,
             id: channel._id,
-        })
+        });
     } catch (err) {
-        return response_500(res, "Error updating channel", err)
+        return response_500(res, "Error updating channel", err);
     }
-}
+};
 
 exports.deleteChannel = async (req, res) => {
     try {
         const channelId = req.body.channel._id;
         await Channel.findByIdAndDelete(channelId);
 
-        return response_200(res, 'Channel Deleted Successfully')
+        return response_200(res, "Channel Deleted Successfully");
     } catch (err) {
-        return response_500(res, "Error deleting channel", err)
+        return response_500(res, "Error deleting channel", err);
     }
-}
+};
 
-exports.getChannels = async (req, res)=>{
-    try{
+exports.getChannels = async (req, res) => {
+    try {
         const workspace = req.workspace;
-    
-        const data = await Promise.all(workspace.channels.map(async (channelId) => { 
-            const channel = await Channel.findById(channelId);
-            return {
-                id: channel._id,
-                name: channel.name,
-                description: channel.description,
-                workspaceId: workspace.workspaceId,
-            }
-        }));
-        
 
-        return response_200(res, "Channels Found",data);
-    }   
-    catch(err)
-    {
+        const data = await Promise.all(
+            workspace.channels.map(async (channelId) => {
+                const channel = await Channel.findById(channelId);
+                return {
+                    id: channel._id,
+                    name: channel.name,
+                    description: channel.description,
+                    workspaceId: workspace.workspaceId,
+                };
+            })
+        );
+
+        return response_200(res, "Channels Found", data);
+    } catch (err) {
         return response_500(res, "Error fetching channels", err);
     }
-}
+};
 
 exports.AddUserToChannel = async (req, res) => {
     try {
-        const{
-            user,
-            channel,
-            workspace
-        } = req.body;
+        const { user, channel, workspace } = req.body;
 
-        if(channel.members.includes(user._id))
-        {
+        if (channel.members.includes(user._id)) {
             return response_400(res, "User already a member of the channel");
         }
 
         channel.members.push(user._id);
-        user.channels.push({channel: channel._id, role: USER_ROLE.NORMAL_USER});
+        user.channels.push({
+            channel: channel._id,
+            role: USER_ROLE.NORMAL_USER,
+        });
 
         await User.findByIdAndUpdate(
             user._id,
@@ -131,58 +129,56 @@ exports.AddUserToChannel = async (req, res) => {
             workspaceId: workspace._id,
             id: channel._id,
             channel,
-            user
+            user,
         });
-
-
-    }
-    catch(err)
-    {
+    } catch (err) {
         return response_500(res, "Error removing user from channel", err);
     }
-}
+};
 
-exports.removeUserFromChannel = async (req,res)=>
-{
+exports.removeUserFromChannel = async (req, res) => {
     try {
-        const{user,channel} = req.body;
+        const { user, channel } = req.body;
         const userToBeRemovedId = req.body.userId;
 
-        if(!channel.members.includes(userToBeRemovedId))
-        {
+        if (!channel.members.includes(userToBeRemovedId)) {
             return response_400(res, "User is not a part of the channel");
         }
 
         const userToBeRemoved = await User.findById(userToBeRemovedId);
 
-        const filteredChannel = channel.members.filter(user=>user!==userToBeRemovedId);
-        const filteredUser = userToBeRemoved.channels.filter(({channel})=>channel!==channel._id);
+        const filteredChannel = channel.members.filter(
+            (user) => user !== userToBeRemovedId
+        );
+        const filteredUser = userToBeRemoved.channels.filter(
+            ({ channel }) => channel !== channel._id
+        );
 
-        const updatedChannel = await Channel.findByIdAndUpdate(channel._id,{members:filteredChannel});
-        const updatedUser = await User.findByIdAndUpdate(userToBeRemovedId,{channels:filteredUser});
+        const updatedChannel = await Channel.findByIdAndUpdate(channel._id, {
+            members: filteredChannel,
+        });
+        const updatedUser = await User.findByIdAndUpdate(userToBeRemovedId, {
+            channels: filteredUser,
+        });
 
-        return response_200(res,"User Removed from Channel Successfully")
-
-
+        return response_200(res, "User Removed from Channel Successfully");
+    } catch (error) {
+        return response_500(res, "Error removing user from channel", error);
     }
-    catch(error)
-    {
-        return response_500(res,"Error removing user from channel",error);
-    }
-}
+};
 
 exports.getUsers = async (req, res) => {
     try {
-      const ChannelId = req.channel._id;
-      const channel = await Channel.findById(ChannelId).populate("members");
-      const users = channel.members;
-      function selectFewerProps(x) {
-        const { username, email, name, _id } = x;
-        return { username, email, name, _id };
-      }
-      const newUsers = users.map(selectFewerProps);
-      return response_200(res, "Users Found", newUsers);
+        const ChannelId = req.channel._id;
+        const channel = await Channel.findById(ChannelId).populate("members");
+        const users = channel.members;
+        function selectFewerProps(x) {
+            const { username, email, name, _id } = x;
+            return { username, email, name, _id };
+        }
+        const newUsers = users.map(selectFewerProps);
+        return response_200(res, "Users Found", newUsers);
     } catch (err) {
-      return response_500(res, "Error finding users", err);
+        return response_500(res, "Error finding users", err);
     }
-  };
+};

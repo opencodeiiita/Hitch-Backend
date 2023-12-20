@@ -5,18 +5,20 @@ const {
     response_500,
 } = require("../utils/responseCodes.utils.js");
 
-async function verifyUser(req, res, next) {
+async function isAuthorized(req, res, next) {
     const authToken = req.cookies.token || req.token;
 
-    console.log(authToken);
+    // console.log(authToken);
     if (!authToken) {
         return response_404(res, "No token provided");
     }
 
     try {
         const decoded = jwt.verify(authToken, process.env.JWT_KEY);
+        // console.log(decoded._id);
+        // return;
 
-        const user = await User.findById(req.userId);
+        const user = await User.findById(decoded._id);
 
         if (!user) {
             return response_404(res, "User not found");
@@ -30,4 +32,4 @@ async function verifyUser(req, res, next) {
     }
 }
 
-module.exports = verifyUser;
+module.exports = isAuthorized;

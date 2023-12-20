@@ -35,11 +35,18 @@ exports.signup = async (req, res) => {
         });
 
         const savedUser = await user.save();
-        return response_201(res, "User created successfully", {
-            token: await user.generateToken(),
+
+        // send token in cookie
+        const token = await savedUser.generateToken();
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+        });
+
+        return response_201(res, "User Created Successfully", {
             name: savedUser.name,
             username: savedUser.username,
-            channels: savedUser.channels,
+            token: token,
         });
     } catch (err) {
         return response_500(res, "Error creating user", err);
@@ -65,6 +72,13 @@ exports.login = async (req, res) => {
             return response_401(res, "Invalid Password");
         }
 
+        // send token in cookie
+        const token = await userExists.generateToken();
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+        });
+
         return response_200(res, "User Logged In Successfully", {
             name: userExists.name,
             username: userExists.username,
@@ -72,5 +86,14 @@ exports.login = async (req, res) => {
         });
     } catch (err) {
         return response_500(res, "Error logging in", err);
+    }
+};
+
+exports.logout = async (req, res) => {
+    try {
+        res.clearCookie("token");
+        return response_200(res, "User Logged Out Successfully");
+    } catch (err) {
+        return response_500(res, "Error logging out", err);
     }
 };
