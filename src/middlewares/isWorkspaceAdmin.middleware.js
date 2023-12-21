@@ -14,7 +14,7 @@ exports.isWorkspaceAdmin = async (req, res, next) => {
             return response_404(res, "Workspace doesn't exist");
         }
 
-        if (user._id != workspace.createdBy) {
+        if (user._id.toString() != workspace.createdBy.toString()) {
             return response_403(
                 res,
                 "You are not authorized to perform this action"
