@@ -1,4 +1,5 @@
 const Workspace = require("../models/workspace.models");
+const Channel = require("../models/channel.models.js");
 const {
     response_200,
     response_201,
@@ -35,6 +36,19 @@ exports.createWorkspace = async (req, res) => {
         });
 
         const savedWorkspace = await workspace.save();
+        const DefaultChannel = new Channel({
+            name:"General",
+            workspace:workspaceId,
+            createdBy:user._id,
+        });
+        const savedChannel = await DefaultChannel.save();
+        const updatedWorkspace = await Workspace.findByIdAndUpdate(
+            workspace._id,
+            {
+                $push: { channels: savedChannel._id },
+            }
+        );
+
         return response_201(res, "Workspace created successfully", {
             name: savedWorkspace.name,
             description: savedWorkspace.description,
