@@ -6,7 +6,7 @@ const dbConfig = require("./src/config/db.config");
 const { response_200 } = require("./src/utils/responseCodes.utils");
 const authRouter = require("./src/routes/auth.routes");
 const workspaceRouter = require("./src/routes/workspace.routes");
-
+const userRouter = require("./src/routes/user.routes");
 const User = require("./src/models/user.models");
 dotenv.config();
 const port = process.env.PORT || 5000;
@@ -32,7 +32,8 @@ app.use(cookieParser());
 
 
 // routers
-app.use("/api/user", authRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 app.get("/", (req, res) => response_200(res, "Server is running"));
 
