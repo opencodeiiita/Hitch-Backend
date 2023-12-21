@@ -30,6 +30,24 @@ exports.createChannel = async (req, res) => {
 
         const savedChannel = await channel.save();
         console.log(savedChannel)
+        
+        const DefaultSubChannel  = new subChannel({
+            name: "Announcement",
+            description: "Announcement SubChannel",
+            channel: savedChannel._id.toString(),
+        });
+
+        const savedDefaultSubChannel = await DefaultSubChannel.save();
+        console.log(savedDefaultSubChannel);
+
+        savedChannel.subChannels = [savedDefaultSubChannel._id.toString()];
+        const updatedChannel  = await Channel.findByIdAndUpdate(
+            savedChannel._id.toString(),
+            {
+                  $push: { subChannels: savedDefaultSubChannel._id.toString()},
+            }
+        );
+        console.log(updatedChannel);
 
         const updatedWorkspace = await Workspace.findByIdAndUpdate(
             workspace._id.toString(),
