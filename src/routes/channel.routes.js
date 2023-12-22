@@ -1,4 +1,4 @@
-const { createChannel, deleteChannel, getChannels, AddUserToChannel } = require('../controllers/channel.controller');
+const { createChannel, deleteChannel, getChannels, AddUserToChannel, updateChannel } = require('../controllers/channel.controller');
 const { isWorkspaceAdmin } = require('../middlewares/isWorkspaceAdmin.middleware');
 const isAuthorized = require('../middlewares/auth.middleware');
 
@@ -14,3 +14,4 @@ module.exports = router;
 router.get('/get/:id',[isAuthorized,isChannelMember], getChannels);
 router.post('/create/in/:id', [isAuthorized, isWorkspaceAdmin], createChannel);
 router.delete('/delete/:id', [isAuthorized, isChannelAdmin], deleteChannel);
+router.put('/update/:id', [isAuthorized, isChannelAdmin], updateChannel);

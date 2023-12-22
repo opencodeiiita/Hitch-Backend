@@ -93,7 +93,7 @@ exports.updateChannel = async (req, res) => {
     return response_200(res, "Channel Updated Successfully", {
       name: channel.name,
       description: channel.description,
-      workspaceId: req.workspace.workspaceId,
+      workspaceId: channel.workspace,
       id: channel._id,
     });
   } catch (err) {
