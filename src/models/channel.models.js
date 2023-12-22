@@ -47,7 +47,7 @@ const ChannelSchema = new mongoose.Schema({
     subChannels: [
         {
             type: mongoose.Schema.ObjectId,
-            ref: "chatrooms",
+            ref: "subchannels",
         },
     ],
 });
