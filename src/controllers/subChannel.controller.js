@@ -48,7 +48,7 @@ exports.updateSubChannel = async (req, res) => {
         if (!name && !description) {
             return response_400(res, "Please provide name or description");
         }
-
+        
         const updatedSubChannel = await SubChannel.findByIdAndUpdate(
             req.subChannel._id,
             {
@@ -56,7 +56,7 @@ exports.updateSubChannel = async (req, res) => {
                 description: description,
             }
         );
-
+        
         return response_200(res, "Sub-Channel Updated Successfully", {
             name: updatedSubChannel.name,
             description: updatedSubChannel.description,
