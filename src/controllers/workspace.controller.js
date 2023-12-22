@@ -38,7 +38,7 @@ exports.createWorkspace = async (req, res) => {
         const savedWorkspace = await workspace.save();
         const DefaultChannel = new Channel({
             name:"General",
-            workspace:workspaceId,
+            workspace:workspace._id.toString(),
             createdBy:user._id,
         });
         const savedChannel = await DefaultChannel.save();
