@@ -50,7 +50,8 @@ app.use("/api/workspace", workspaceRoutes);
 const channelRoutes = require("./src/routes/channel.routes");
 app.use("/api/channel", channelRoutes);
 
-
+const subChannelRouter = require("./src/routes/subChannel.routes");
+app.use("/api/subchannel", subChannelRouter);
 app.listen(port, () =>
     console.log(`🚀 Server running on port http://localhost:${port}/`)
 );

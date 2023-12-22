@@ -11,17 +11,25 @@ const {
 exports.createSubChannel = async (req, res) => {
     try {
         const { name, description } = req.body;
-        const channelId = req.channel._id;
+        const channelId = req.body.channel._id;
 
         if (!name || !description) {
             return response_400(res, "Please provide name or description");
         }
 
-        const subchannel = new SubChannel({
+        const subChannel = new SubChannel({
             name: name,
             description: description,
             channel: channelId,
-        }).save();
+        });
+
+        const newSubChannel = await subChannel.save();
+
+        const updatedChannel = await Channel.findByIdAndUpdate(channelId, {
+            $push: { subChannels: newSubChannel._id },
+        });
+        
+        console.log(updatedChannel);
         return response_201(res, "SubChannel Created Successfully", {
             name: newSubChannel.name,
             description: newSubChannel.description,
