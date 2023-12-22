@@ -149,8 +149,6 @@ exports.deleteChannel = async (req, res) => {
 exports.getChannels = async (req, res) => {
   try {
     const workspace = req.body.workspace;
-    console.log(workspace)
-    console.log(req.body)
     const data = await Promise.all(
       workspace.channels.map(async (channelId) => {
         const channel = await Channel.findById(channelId);
