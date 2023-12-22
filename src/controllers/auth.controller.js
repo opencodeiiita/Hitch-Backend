@@ -8,6 +8,7 @@ const {
 } = require("../utils/responseCodes.utils");
 
 exports.signup = async (req, res) => {
+  
     try {
         const { name, email, password, username } = req.body;
 
