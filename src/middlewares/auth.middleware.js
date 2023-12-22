@@ -24,7 +24,7 @@ async function isAuthorized(req, res, next) {
         }
 
         req.body.user = user;
-
+     
         next();
     } catch (err) {
         return response_500(res, "Failed to authenticate User", err);
