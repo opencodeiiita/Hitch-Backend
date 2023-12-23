@@ -168,13 +168,11 @@ exports.getChannels = async (req, res) => {
 exports.AddUserToChannel = async (req, res) => {
   try {
     const { userId } = req.body;
-    const channelId = req.params;
-    const channel = await Channel.findById(channelId.id);
+    const channel = req.body.channel;
     const user = await User.findById(userId);
-    // console.log(userId);
-    // console.log(user);
-    console.log(channel);
-    //console.log(channel.members);
+    if (!user) {
+      return response_400(res, "No such User Exists");
+    }
     if (channel.members) {
       if (channel.members.includes(user._id)) {
         return response_400(res, "User already a member of the channel");
