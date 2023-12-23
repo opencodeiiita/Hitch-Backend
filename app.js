@@ -14,14 +14,14 @@ const port = process.env.PORT || 5000;
 const cookieParser = require("cookie-parser");
 
 mongoose
-    .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
-    .then(() => {
-        console.log("🎉 Successfully connected to MongoDB.");
-    })
-    .catch((err) => {
-        console.error("💩 Failed to connect to MongoDB\n", err);
-        process.exit();
-    });
+  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
+  .then(() => {
+    console.log("🎉 Successfully connected to MongoDB.");
+  })
+  .catch((err) => {
+    console.error("💩 Failed to connect to MongoDB\n", err);
+    process.exit();
+  });
 
 const app = express();
 
@@ -29,7 +29,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser());
-
 
 // routers
 app.use("/api/auth", authRouter);
@@ -39,13 +38,12 @@ app.get("/", (req, res) => response_200(res, "Server is running"));
 
 // path to get all usrs
 app.get("/api/users", async (req, res) => {
-    const users = await User.find();
-    return response_200(res, "Users fetched successfully", users);
+  const users = await User.find();
+  return response_200(res, "Users fetched successfully", users);
 });
 
 const workspaceRoutes = require("./src/routes/workspace.routes");
 app.use("/api/workspace", workspaceRoutes);
-
 
 const channelRoutes = require("./src/routes/channel.routes");
 app.use("/api/channel", channelRoutes);
@@ -53,5 +51,5 @@ app.use("/api/channel", channelRoutes);
 const subChannelRouter = require("./src/routes/subChannel.routes");
 app.use("/api/subchannel", subChannelRouter);
 app.listen(port, () =>
-    console.log(`🚀 Server running on port http://localhost:${port}/`)
+  console.log(`🚀 Server running on port http://localhost:${port}/`)
 );

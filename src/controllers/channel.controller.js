@@ -110,10 +110,10 @@ exports.deleteChannel = async (req, res) => {
     const subChannels = await subChannel.find({ channel: channelId });
 
     await Promise.all(
-        subChannels.map(async (subCh) => {
-            await subChannel.findByIdAndDelete(subCh._id);
-        }
-    ));
+      subChannels.map(async (subCh) => {
+        await subChannel.findByIdAndDelete(subCh._id);
+      })
+    );
 
     // delete the channels instance for all users in that channel
     const users = await User.find({
@@ -137,8 +137,6 @@ exports.deleteChannel = async (req, res) => {
         $pull: { channels: channelId },
       }
     );
-
-
 
     return response_200(res, "Channel Deleted Successfully");
   } catch (err) {
@@ -169,13 +167,19 @@ exports.getChannels = async (req, res) => {
 
 exports.AddUserToChannel = async (req, res) => {
   try {
-    const { user, channel, workspace } = req.body;
-
-    if (channel.members.includes(user._id)) {
-      return response_400(res, "User already a member of the channel");
+    const { userId } = req.body;
+    const channel = req.body.channel;
+    const user = await User.findById(userId);
+    if (!user) {
+      return response_400(res, "No such User Exists");
     }
-
-    channel.members.push(user._id);
+    if (channel.members) {
+      if (channel.members.includes(user._id)) {
+        return response_400(res, "User already a member of the channel");
+      }
+    }
+    channel.members.push(user);
+    //console.log(channel.members);
     user.channels.push({
       channel: channel._id,
       role: USER_ROLE.NORMAL_USER,
@@ -192,7 +196,8 @@ exports.AddUserToChannel = async (req, res) => {
       { members: channel.members },
       { new: true }
     );
-
+    const workspace = channel.workspace;
+    //console.log(workspace);
     return response_200(res, "User Added to Channel Successfully", {
       name: channel.name,
       description: channel.description,
@@ -202,7 +207,7 @@ exports.AddUserToChannel = async (req, res) => {
       user,
     });
   } catch (err) {
-    return response_500(res, "Error removing user from channel", err);
+    return response_500(res, "Error adding user from channel", err);
   }
 };
 
