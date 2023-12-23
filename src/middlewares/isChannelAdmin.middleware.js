@@ -11,7 +11,7 @@ exports.isChannelAdmin = async (req, res, next) => {
             return response_404(res, 'Channel not found');
         }
 
-        const isAdminChannel = user.channels.some((channel) => channel.channel._id.toString() === req.params.id && channel.role == USER_ROLE.ADMIN);
+        const isAdminChannel = user.channels.some((channel) => channel.channel._id.toString() === req.params.id && channel.role === USER_ROLE.ADMIN);
 
         if (!isAdminChannel || !channel.workspace.createdBy.equals(user._id )) {
             return response_403(res, 'You are not authorized to perform this action');
