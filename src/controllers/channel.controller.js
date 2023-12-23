@@ -213,17 +213,17 @@ exports.AddUserToChannel = async (req, res) => {
 
 exports.removeUserFromChannel = async (req, res) => {
   try {
-    const { channel } = req.body;
-    const userToBeRemovedId = req.body.userId;
+    const { userId } = req.body;
+    const channel = req.body.channel;
 
-    if (!channel.members.includes(userToBeRemovedId)) {
+    if (!channel.members.includes(userId)) {
       return response_400(res, "User is not a part of the channel");
     }
 
-    const userToBeRemoved = await User.findById(userToBeRemovedId);
+    const userToBeRemoved = await User.findById(userId);
 
     const filteredChannel = channel.members.filter(
-      (user) => user !== userToBeRemovedId
+      (user) => user !== userId
     );
     const filteredUser = userToBeRemoved.channels.filter(
       ({ channel }) => channel !== channel._id
@@ -232,7 +232,7 @@ exports.removeUserFromChannel = async (req, res) => {
     const updatedChannel = await Channel.findByIdAndUpdate(channel._id, {
       members: filteredChannel,
     });
-    const updatedUser = await User.findByIdAndUpdate(userToBeRemovedId, {
+    const updatedUser = await User.findByIdAndUpdate(userId, {
       channels: filteredUser,
     });
 

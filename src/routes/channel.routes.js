@@ -3,6 +3,7 @@ const {
   deleteChannel,
   getChannels,
   AddUserToChannel,
+  removeUserFromChannel,
   updateChannel,
 } = require("../controllers/channel.controller");
 const {
@@ -24,3 +25,5 @@ router.post("/create/in/:id", [isAuthorized, isWorkspaceAdmin], createChannel);
 router.delete("/delete/:id", [isAuthorized, isChannelAdmin], deleteChannel);
 router.put("/update/:id", [isAuthorized, isChannelAdmin], updateChannel);
 router.post("/addUser/:id", [isAuthorized, isChannelAdmin], AddUserToChannel);
+router.delete("/removeUser/:id", [isAuthorized, isChannelMember], removeUserFromChannel);
+
