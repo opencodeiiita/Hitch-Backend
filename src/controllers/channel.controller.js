@@ -245,7 +245,7 @@ exports.removeUserFromChannel = async (req, res) => {
 exports.getUsers = async (req, res) => {
   try {
     //console.log(req.body);
-    const ChannelId = req.body.channel;
+    const ChannelId = req.body.channel._id;
     //console.log(ChannelId);
     const channel = await Channel.findById(ChannelId).populate("members");
     const users = channel.members;
