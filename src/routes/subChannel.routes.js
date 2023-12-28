@@ -1,4 +1,4 @@
-const {createSubChannel, updateSubChannel} = require('../controllers/subChannel.controller');
+const {createSubChannel, updateSubChannel, deleteSubChannel} = require('../controllers/subChannel.controller');
 const { isChannelAdmin } = require('../middlewares/isChannelAdmin.middleware');
 const { isSubChannelAdmin } = require('../middlewares/isSubChannelAdmin.middleware');
 const isAuthorized = require('../middlewares/auth.middleware');
@@ -10,3 +10,4 @@ module.exports = router;
 
 router.post('/create/in/:id', [isAuthorized, isChannelAdmin], createSubChannel);
 router.put('/update/:id', [isAuthorized,isSubChannelAdmin ],updateSubChannel);
+router.delete('/delete/:id', [isAuthorized, isSubChannelAdmin], deleteSubChannel);
