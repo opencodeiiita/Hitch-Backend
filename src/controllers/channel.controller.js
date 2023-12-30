@@ -244,9 +244,12 @@ exports.removeUserFromChannel = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
+    //console.log(req.body);
     const ChannelId = req.channel._id;
+    //console.log(ChannelId);
     const channel = await Channel.findById(ChannelId).populate("members");
     const users = channel.members;
+    console.log(users);
     function selectFewerProps(x) {
       const { username, email, name, _id } = x;
       return { username, email, name, _id };
