@@ -27,5 +27,5 @@ router.delete("/delete/:id", [isAuthorized, isChannelAdmin], deleteChannel);
 router.put("/update/:id", [isAuthorized, isChannelAdmin], updateChannel);
 router.post("/addUser/:id", [isAuthorized, isChannelAdmin], AddUserToChannel);
 router.delete("/removeUser/:id", [isAuthorized, isChannelMember], removeUserFromChannel);
-router.get("/getUsers/:id", [isAuthorized, isChannelMember,isChannelAdmin], getUsers);
+router.get("/getUsers/:id", [isAuthorized, isChannelMember], getUsers);
 
