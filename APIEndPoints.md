@@ -410,6 +410,61 @@ The following properties of every endpoint will be descibed in this file:
     }
     ```
 
+## Messages
+
+### Send Message
+
+- **URL:** /api/message/send/in/:id        -> MongooDB ID for subchannel
+- **Method:** POST
+- **Authorized:** True
+- **Request Body:**
+  - **message:** String
+  - **attagements:** Array of file objects
+- **Success Status Code:** 201
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Message Sent Successfully",
+        "data": {
+            "id": String,                      -> Message ID
+        },
+    }
+    ```
+
+### Get All Messages
+
+- **URL:** /api/message/getAll/in/:id        -> MongooDB ID for subchannel
+- **Method:** GET
+- **Authorized:** True
+- **Query Parameters:**
+  - **limit:** Number
+  - **skip:** Number
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Messages Found",
+        "data": [
+            {
+                "message": String,
+                "attagements": Array of strings,
+                "id": String,                      -> Message ID
+                "createdAt": Date,
+                "updatedAt": Date,
+                "sender": {
+                    "profilePicUrl": String,
+                    "name": String,
+                    "id": String,
+                },
+            },
+        ]
+    }
+    ```
+
 ## User
 
 ### Query User
