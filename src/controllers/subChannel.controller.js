@@ -1,4 +1,3 @@
-const subChannelModels = require("../models/subChannel.models");
 const SubChannel = require("../models/subChannel.models");
 const Channel = require("../models/channel.models");
 const {
@@ -48,7 +47,7 @@ exports.updateSubChannel = async (req, res) => {
         if (!name && !description) {
             return response_400(res, "Please provide name or description");
         }
-
+        
         const updatedSubChannel = await SubChannel.findByIdAndUpdate(
             req.subChannel._id,
             {
@@ -56,7 +55,7 @@ exports.updateSubChannel = async (req, res) => {
                 description: description,
             }
         );
-
+        
         return response_200(res, "Sub-Channel Updated Successfully", {
             name: updatedSubChannel.name,
             description: updatedSubChannel.description,
@@ -69,7 +68,16 @@ exports.updateSubChannel = async (req, res) => {
 
 exports.deleteSubChannel = async (req, res) => {
     try {
-        const SubChannelId = req.SubChannel._id;
+        const SubChannelId = req.subChannel._id;
+        const subchannel = await SubChannel.findById(SubChannelId);
+
+        const channel = await Channel.findById(subchannel.channel);
+
+
+        await Channel.findByIdAndUpdate(channel._id, {
+            $pull: { subChannels: SubChannelId },
+        });
+
         await SubChannel.findByIdAndDelete(SubChannelId);
 
         return response_200(res, "SubChannel Deleted Successfully");

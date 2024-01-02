@@ -110,10 +110,10 @@ exports.deleteChannel = async (req, res) => {
     const subChannels = await subChannel.find({ channel: channelId });
 
     await Promise.all(
-        subChannels.map(async (subCh) => {
-            await subChannel.findByIdAndDelete(subCh._id);
-        }
-    ));
+      subChannels.map(async (subCh) => {
+        await subChannel.findByIdAndDelete(subCh._id);
+      })
+    );
 
     // delete the channels instance for all users in that channel
     const users = await User.find({
@@ -137,8 +137,6 @@ exports.deleteChannel = async (req, res) => {
         $pull: { channels: channelId },
       }
     );
-
-
 
     return response_200(res, "Channel Deleted Successfully");
   } catch (err) {
@@ -169,13 +167,19 @@ exports.getChannels = async (req, res) => {
 
 exports.AddUserToChannel = async (req, res) => {
   try {
-    const { user, channel, workspace } = req.body;
-
-    if (channel.members.includes(user._id)) {
-      return response_400(res, "User already a member of the channel");
+    const { userId } = req.body;
+    const channel = req.body.channel;
+    const user = await User.findById(userId);
+    if (!user) {
+      return response_400(res, "No such User Exists");
     }
-
-    channel.members.push(user._id);
+    if (channel.members) {
+      if (channel.members.includes(user._id)) {
+        return response_400(res, "User already a member of the channel");
+      }
+    }
+    channel.members.push(user);
+    //console.log(channel.members);
     user.channels.push({
       channel: channel._id,
       role: USER_ROLE.NORMAL_USER,
@@ -192,7 +196,8 @@ exports.AddUserToChannel = async (req, res) => {
       { members: channel.members },
       { new: true }
     );
-
+    const workspace = channel.workspace;
+    //console.log(workspace);
     return response_200(res, "User Added to Channel Successfully", {
       name: channel.name,
       description: channel.description,
@@ -202,23 +207,23 @@ exports.AddUserToChannel = async (req, res) => {
       user,
     });
   } catch (err) {
-    return response_500(res, "Error removing user from channel", err);
+    return response_500(res, "Error adding user from channel", err);
   }
 };
 
 exports.removeUserFromChannel = async (req, res) => {
   try {
-    const { channel } = req.body;
-    const userToBeRemovedId = req.body.userId;
+    const { userId } = req.body;
+    const channel = req.body.channel;
 
-    if (!channel.members.includes(userToBeRemovedId)) {
+    if (!channel.members.includes(userId)) {
       return response_400(res, "User is not a part of the channel");
     }
 
-    const userToBeRemoved = await User.findById(userToBeRemovedId);
+    const userToBeRemoved = await User.findById(userId);
 
     const filteredChannel = channel.members.filter(
-      (user) => user !== userToBeRemovedId
+      (user) => user !== userId
     );
     const filteredUser = userToBeRemoved.channels.filter(
       ({ channel }) => channel !== channel._id
@@ -227,7 +232,7 @@ exports.removeUserFromChannel = async (req, res) => {
     const updatedChannel = await Channel.findByIdAndUpdate(channel._id, {
       members: filteredChannel,
     });
-    const updatedUser = await User.findByIdAndUpdate(userToBeRemovedId, {
+    const updatedUser = await User.findByIdAndUpdate(userId, {
       channels: filteredUser,
     });
 
@@ -239,9 +244,12 @@ exports.removeUserFromChannel = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
+    //console.log(req.body);
     const ChannelId = req.channel._id;
+    //console.log(ChannelId);
     const channel = await Channel.findById(ChannelId).populate("members");
     const users = channel.members;
+    console.log(users);
     function selectFewerProps(x) {
       const { username, email, name, _id } = x;
       return { username, email, name, _id };
