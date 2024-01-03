@@ -29,7 +29,7 @@ const upload = multer({
     limits: {
         fileSize: 1024 * 1024 * FILE_SIZE_LIMIT
     },
-    fileFilter
+    fileFilter: fileFilter
 });
 
 module.exports = upload;
