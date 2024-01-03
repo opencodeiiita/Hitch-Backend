@@ -494,3 +494,23 @@ The following properties of every endpoint will be descibed in this file:
         ]
     }
     ```
+
+### Adding Profile Picture
+
+- **URL:** /api/user/add/pic
+- **Method:** POST
+- **Authorized:** True
+- **Request Body:**
+  - **profilePic:** File
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Profile Picture Added Successfully",
+        "data": {
+            "profilePicUrl": String,
+        },
+    }
+    ```
