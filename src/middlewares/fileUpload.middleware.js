@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname, '../public/images'))
     },
     filename: function (req, file, cb) {
-        cb(null, uuidv4() + '-' + Date.now() + path.extname(file.originalname))
+        cb(null, path.basename(file.originalname) + '-' + uuidv4() + path.extname(file.originalname))
     }
 });
 
@@ -23,6 +23,13 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-const upload = multer({storage: storage, fileFilter: fileFilter});
+const FILE_SIZE_LIMIT = process.env.FILE_SIZE_LIMIT || 1024 * 1024 * 1; // 1 MB
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * FILE_SIZE_LIMIT
+    },
+    fileFilter
+});
 
 module.exports = upload;
