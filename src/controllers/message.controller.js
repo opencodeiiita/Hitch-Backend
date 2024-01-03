@@ -6,16 +6,13 @@ const {response_500, response_400, response_200} = require("../utils/responseCod
 exports.sendMessage = async (req, res) => {
     try {
         const {message, attachments, user} = req.body;
-        const subChannelId = req.params.id;
+        const subChannelId = req.body.subchannel.id;
 
-        if (!message || !subChannelId || !user) {
+        if (!message || !attachments) {
             return response_400(res, "Missing required fields");
         }
-        console.log(subChannelId);
+
         const subChannel = await SubChannel.findById(subChannelId);
-        if (!subChannel) {
-            return response_400(res, "Invalid SubChannel");
-        }
 
         const newMessage = new Message({
             message,
@@ -30,6 +27,7 @@ exports.sendMessage = async (req, res) => {
             subChannelId,
             {
                 $push: { messages: savedMessage._id.toString() },
+                latestMessage: savedMessage._id.toString(),
             }
         );
 
