@@ -1,6 +1,38 @@
-const Message = require("../models/message.models");
+
 const SubChannel = require("../models/subChannel.models");
-const {response_500, response_400, response_200} = require("../utils/responseCodes.utils");
+const Message = require("../models/message.models")
+
+const {
+  response_200,
+  response_400,
+  response_500,
+} = require("../utils/responseCodes.utils");
+
+
+
+exports.getAllMessages = async (req, res) => {
+  try {
+    const UserId = req.user.id;
+    const SubChannelId = req.body.subchannel.id;
+    const subchannel = await SubChannel.findById(SubChannelId).populate('messages');
+
+    const messages = subchannel.messages.map( message => {
+        const isSentByUser  = message.createdBy.equals(UserId);
+        return {
+          ...message.toObject(),
+          sentByUser: isSentByUser,
+        };
+    }
+      
+    );
+    return response_200(res, "Messages Found",messages);
+
+
+  }
+  catch (err) {
+    return response_500(res, "Error getting the messages", err);
+  }
+}
 
 
 exports.sendMessage = async (req, res) => {
