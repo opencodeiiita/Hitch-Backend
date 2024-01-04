@@ -12,14 +12,19 @@ const {
 
 exports.getAllMessages = async (req, res) => {
   try {
+    const UserId = req.user.id;
     const SubChannelId = req.body.subchannel.id;
-    const isValidSubchannel = await SubChannel.findById(SubChannelId).populate('messages');
+    const subchannel = await SubChannel.findById(SubChannelId).populate('messages');
 
-    if (!isValidSubchannel) {
-      return response_400(res,'Missing required fields');
+    const messages = subchannel.messages.map( message => {
+        const isSentByUser  = message.createdBy.equals(UserId);
+        return {
+          ...message.toObject(),
+          sentByUser: isSentByUser,
+        };
     }
-
-    const messages = isValidSubchannel.messages;
+      
+    );
     return response_200(res, "Messages Found",messages);
 
 
