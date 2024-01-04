@@ -27,7 +27,7 @@ const MessageSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
     },
-    subChannels: {
+    subChannel: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "chatrooms",
     },
