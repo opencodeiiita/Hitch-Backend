@@ -1,16 +1,10 @@
-import { JsonWebTokenError } from "jsonwebtoken";
 import ChatEventEnum from "../enums/chatEvents.enums";
 const User = require("../models/user.models.js");
 
-import isAuthorized from "../middlewares/auth.middleware";
 const jwt = require("jsonwebtoken");
 
 
-
-
-
-
-const initializeSocketIO = ( ) => {
+const initializeSocketIO = (io) => {
 
     // to check authToken from cookies
     io.use(async (socket, next) => {
@@ -38,7 +32,7 @@ const initializeSocketIO = ( ) => {
             next();
         } catch (err) {
             socket.disconnect(true);
-            return response_500(res, "Failed to authenticate User", err);
+            return response_500(res, "Internal Server Error", err);
         }
     });
 
