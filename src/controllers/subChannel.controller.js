@@ -88,7 +88,7 @@ exports.deleteSubChannel = async (req, res) => {
 
 exports.getSubChannel = async (req, res) => {
     try {
-        const ChannelId = req.channel._id;
+        const ChannelId = req.params.id
         const channel =
             await Channel.findById(ChannelId).populate("subChannels");
         const subChannels = channel.subChannels;
