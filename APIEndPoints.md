@@ -169,6 +169,36 @@ The following properties of every endpoint will be descibed in this file:
     }
     ```
 
+### Get Workspaces
+
+- **URL:** /api/workspace/get
+- **Method:** GET
+- **Authorized:** True
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Workspaces Found",
+        "data": [
+            {
+                "name": String,
+                "description": String,
+                "workspaceId": String,
+                "id": String,
+                "channels": [
+                    {
+                        "name": String,
+                        "description": String,
+                        "id": String,
+                    },
+                ],
+            },
+        ]
+    }
+    ```
+
 ## Channels
 
 ### Create Channel
@@ -492,5 +522,25 @@ The following properties of every endpoint will be descibed in this file:
                 "id": String,
             },
         ]
+    }
+    ```
+
+### Adding Profile Picture
+
+- **URL:** /api/user/add/pic
+- **Method:** POST
+- **Authorized:** True
+- **Request Body:**
+  - **profilePic:** File
+- **Success Status Code:** 200
+- **Response Data:**
+
+    ```json
+    {
+        "status": 'OK',
+        "message": "Profile Picture Added Successfully",
+        "data": {
+            "profilePicUrl": String,
+        },
     }
     ```
