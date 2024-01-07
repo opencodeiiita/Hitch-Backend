@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const USER_ROLE = require("../enums/userRoles.enums");
+const { sendVerificationMail } = require("../utils/sendMail.utils");
 
 const UserSchema = new mongoose.Schema({
     __created: {
@@ -70,6 +71,15 @@ const UserSchema = new mongoose.Schema({
             },
         },
     ],
+    verified: {
+        type: Boolean,
+        default: false
+    },
+    verificationId: String,
+    verificationSentAt: Date
+
+
+
 });
 
 // Reset password token generation
@@ -103,5 +113,15 @@ UserSchema.methods.generateToken = async function () {
         expiresIn: "7d",
     });
 };
+
+UserSchema.methods.verifyEmail = async function (email) {
+
+ const verificationId = crypto.randomBytes(20).toString('hex');
+ this.verificationId = verificationId;
+ this.vertificationSentAt = new Date();
+
+ sendVerificationMail(this.email,verificationId);
+
+}
 
 module.exports = mongoose.model("users", UserSchema);
