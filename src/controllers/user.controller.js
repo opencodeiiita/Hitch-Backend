@@ -6,6 +6,27 @@ const {
     response_500,
 } = require("../utils/responseCodes.utils");
 
+exports.addImage = async (req,res) => {
+    try {
+        const user = req.user;
+        const profilePic = req.file;
+    
+        if (!profilePic) {
+          return res.status(400).json({ error: "Profile picture is required" });
+        }
+        console.log(user);
+        console.log(profilePic);
+    
+        user.profilePicUrl = profilePic.filename;
+        await user.save();
+        response_200(res,"Profile picture Added successfully",{profilePicUrl: user.profilePicUrl})
+    } 
+    catch (error) {
+        console.error(error);
+        response_500(res,"Internal Server Error",err)
+    }
+}
+
 exports.queryUser = async (req, res) => {
     try {
         const { email, username } = req.query;
