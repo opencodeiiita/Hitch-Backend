@@ -1,11 +1,14 @@
 const User = require("../models/user.models");
+const crypto = require('crypto');
 const {
     response_201,
     response_500,
     response_400,
     response_200,
     response_401,
+    response_404,
 } = require("../utils/responseCodes.utils");
+const { sendVerificationMail } = require("../utils/sendMail.utils");
 
 exports.signup = async (req, res) => {
   
@@ -27,15 +30,20 @@ exports.signup = async (req, res) => {
         if (usernameExists) {
             return response_400(res, "username is already in use");
         }
+        const verificationId = crypto.randomBytes(20).toString('hex');
 
         const user = new User({
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
             username: req.body.username,
+            verificationId: verificationId,
+
         });
 
         const savedUser = await user.save();
+
+        await sendVerificationMail(savedUser.email,user.username, verificationId);
 
         // send token in cookie
         const token = await savedUser.generateToken();
@@ -44,7 +52,11 @@ exports.signup = async (req, res) => {
             secure: true,
         });
 
-        return response_201(res, "User Created Successfully", {
+
+
+        
+
+        return response_201(res, "User Created Successfully. Verification Email Sent", {
             name: savedUser.name,
             username: savedUser.username,
             token: token,
@@ -98,3 +110,27 @@ exports.logout = async (req, res) => {
         return response_500(res, "Error logging out", err);
     }
 };
+
+exports.verifyEmail = async(req,res) => {
+    const {verificationId} = req.params;
+    try {
+        const user = await User.findOne({verificationId});
+
+        if(!user) {
+            return response_404(res, 'Invalid verification Link');
+        }
+
+        if(user.verified){
+            return response_200(res,"User Verified Already")
+        }
+
+        user.verified = true;
+        await user.save();
+        return response_200(res,"User Verified Successfully")
+
+
+    }catch(err){
+        console.log(err);
+        return response_500(res,"Internal Server Error",err);
+    }
+}

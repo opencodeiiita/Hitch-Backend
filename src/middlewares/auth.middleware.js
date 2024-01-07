@@ -24,6 +24,7 @@ async function isAuthorized(req, res, next) {
         }
 
         req.body.user = user;
+        req.user = user;
      
         next();
     } catch (err) {
