@@ -14,8 +14,7 @@ const port = process.env.PORT || 5000;
 const cookieParser = require("cookie-parser");
 
 mongoose
-  // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
-  .connect(`mongodb+srv://gargaditya2174:DPadi197$@cluster0.ow7ii5j.mongodb.net/?retryWrites=true&w=majority`)
+  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
   .then(() => {
     console.log("🎉 Successfully connected to MongoDB.");
   })
