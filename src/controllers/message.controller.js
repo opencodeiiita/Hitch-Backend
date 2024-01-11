@@ -38,8 +38,9 @@ exports.getAllMessages = async (req, res) => {
 exports.sendMessage = async (req, res) => {
     try {
         const {message, attachments, user} = req.body;
-        const subChannelId = req.body.subchannel.id;
-
+        console.log(message)
+        const subChannelId = req.subChannel._id;
+        console.log(message)
         if (!message || !attachments) {
             return response_400(res, "Missing required fields");
         }
@@ -47,7 +48,7 @@ exports.sendMessage = async (req, res) => {
         const subChannel = await SubChannel.findById(subChannelId);
 
         const newMessage = new Message({
-            message,
+            text:message,
             files: attachments.map((file) => file.file.toString()),
             createdBy: user._id.toString(),
             subChannel: subChannelId,

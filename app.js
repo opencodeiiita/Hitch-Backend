@@ -14,7 +14,8 @@ const port = process.env.PORT || 5000;
 const cookieParser = require("cookie-parser");
 
 mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
+  // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
+  .connect(`mongodb+srv://gargaditya2174:DPadi197$@cluster0.ow7ii5j.mongodb.net/?retryWrites=true&w=majority`)
   .then(() => {
     console.log("🎉 Successfully connected to MongoDB.");
   })
@@ -50,6 +51,10 @@ app.use("/api/channel", channelRoutes);
 
 const subChannelRouter = require("./src/routes/subChannel.routes");
 app.use("/api/subchannel", subChannelRouter);
+
+const messageRoutes = require("./src/routes/message.routes");
+app.use("/api/message", messageRoutes);
+
 app.listen(port, () =>
   console.log(`🚀 Server running at http://localhost:${port}/`)
 );
