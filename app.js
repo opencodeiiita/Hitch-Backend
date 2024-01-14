@@ -52,6 +52,10 @@ app.use("/api/channel", channelRoutes);
 
 const subChannelRouter = require("./src/routes/subChannel.routes");
 app.use("/api/subchannel", subChannelRouter);
+
+const messageRoutes = require("./src/routes/message.routes");
+app.use("/api/message", messageRoutes);
+
 app.listen(port, () =>
   console.log(`🚀 Server running at http://localhost:${port}/`)
 );
