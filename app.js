@@ -1,4 +1,7 @@
 const express = require("express");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const { initializeSocketIO } = require("./src/socket/index.socket");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -15,16 +18,28 @@ const port = process.env.PORT || 5000;
 const cookieParser = require("cookie-parser");
 
 mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
-  .then(() => {
-    console.log("🎉 Successfully connected to MongoDB.");
-  })
-  .catch((err) => {
-    console.error("💩 Failed to connect to MongoDB\n", err);
-    process.exit();
-  });
+    .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
+    .then(() => {
+        console.log("🎉 Successfully connected to MongoDB.");
+    })
+    .catch((err) => {
+        console.error("💩 Failed to connect to MongoDB\n", err);
+        process.exit();
+    });
 
 const app = express();
+
+const httpServer = createServer(app);
+
+const io = new Server(httpServer, {
+    pingTimeout: 60000,
+    cors: {
+        origin: process.env.CORS_ORIGIN,
+        credentials: true,
+    },
+});
+
+app.set("io", io); // using set method to mount the `io` instance on the app to avoid usage of `global`
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,8 +55,8 @@ app.get("/", (req, res) => response_200(res, "Server is running"));
 
 // path to get all usrs
 app.get("/api/users", async (req, res) => {
-  const users = await User.find();
-  return response_200(res, "Users fetched successfully", users);
+    const users = await User.find();
+    return response_200(res, "Users fetched successfully", users);
 });
 
 const workspaceRoutes = require("./src/routes/workspace.routes");
@@ -56,6 +71,8 @@ app.use("/api/subchannel", subChannelRouter);
 const messageRoutes = require("./src/routes/message.routes");
 app.use("/api/message", messageRoutes);
 
+initializeSocketIO(io);
+
 app.listen(port, () =>
-  console.log(`🚀 Server running at http://localhost:${port}/`)
+    console.log(`🚀 Server running at http://localhost:${port}/`)
 );
