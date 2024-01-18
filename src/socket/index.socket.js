@@ -1,5 +1,6 @@
 import ChatEventEnum from "../enums/chatEvents.enums";
 const User = require("../models/user.models.js");
+const cookie = require("cookie");
 
 const jwt = require("jsonwebtoken");
 
@@ -38,11 +39,12 @@ export const initializeSocketIO = (io) => {
             }
 
             if (!token) {
-                // Token is required for the socket to work
-                throw new ApiError(
-                    401,
-                    "Un-authorized handshake. Token is missing"
+                // Token is required for the socket to work, send error
+                socket.emit(
+                    ChatEventEnum.SOCKET_ERROR_EVENT,
+                    "Token is missing"
                 );
+                return;
             }
 
             const decodedToken = jwt.verify(
@@ -54,10 +56,8 @@ export const initializeSocketIO = (io) => {
 
             // retrieve the user
             if (!user) {
-                throw new ApiError(
-                    401,
-                    "Un-authorized handshake. Token is invalid"
-                );
+                socket.emit(ChatEventEnum.SOCKET_ERROR_EVENT, "User not found");
+                return;
             }
             socket.user = user; // mount te user object to the socket
 
