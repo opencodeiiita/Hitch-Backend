@@ -1,4 +1,4 @@
-import ChatEventEnum from "../enums/chatEvents.enums";
+const ChatEventEnum = require("../enums/chatEvents.enums");
 const User = require("../models/user.models.js");
 const cookie = require("cookie");
 
@@ -23,7 +23,7 @@ const mountParticipantStoppedTypingEvent = (socket) => {
     });
 };
 
-export const initializeSocketIO = (io) => {
+const initializeSocketIO = (io) => {
     return io.on("connection", async (socket) => {
         try {
             // parse the cookies from the handshake headers (This is only possible if client has `withCredentials: true`)
@@ -91,6 +91,11 @@ export const initializeSocketIO = (io) => {
     });
 };
 
-export const emitSocketEvent = (req, roomId, event, payload) => {
+const emitSocketEvent = (req, roomId, event, payload) => {
     req.app.get("io").in(roomId).emit(event, payload);
 };
+
+module.exports = {
+    initializeSocketIO,
+    emitSocketEvent
+}
